@@ -6,11 +6,13 @@
           <Input placeholder="请输入自定义的名称" style="width: 200px"></Input>
         </FormItem>
         <Row>
-          <CheckboxGroup>
+          <span class="form-label">
+            <CheckboxGroup>
             <Checkbox label="代码是否来自上一阶段"></Checkbox>
           </CheckboxGroup>
-          <span class="form-label">高级配置</span>
+          </span>
           <Row class="high-level">
+            <span class="form-label">高级配置</span>
             <FormItem label="jdk">
               <Select style="width: 200px">
                 <Option value="jdk1.8">jdk1.8</Option>
@@ -18,22 +20,22 @@
               </Select>
             </FormItem>
             <FormItem label="maven">
-              <span>需要maven编译的子目录</span>
               <Input style="width: 150px"/>
               <br/>
-              <span>扫描目录</span>
+            </FormItem>
+            <FormItem label="扫描目录">
               <Select style="width: 200px">
                 <Option value="1">根目录</Option>
                 <Option value="2">子目录</Option>
               </Select>
             </FormItem>
-            <FormItem label="nodejs">
+            <FormItem>
               <CheckboxGroup>
                 <Checkbox label="是否发布报告"></Checkbox>
               </CheckboxGroup>
               <Row>
                 <span>pattern</span>
-                <Input style="width: 150px"/>
+                <Input style="width: 150px" placeholder="coverage.xm;"/>
                 <br/>
               </Row>
             </FormItem>

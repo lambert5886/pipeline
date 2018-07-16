@@ -37,7 +37,7 @@
           {stepId: 5, name: 'Docekr镜像', path: ''},
           {stepId: 6, name: 'yaml部署', path: ''},
           {stepId: 7, name: '自定义脚本', path: ''},
-          {stepId: 8, name: 'Cobertura', path: ''},
+          {stepId: 8, name: 'Cobertura', path: '/assembly/guide/cobertura'},
           {stepId: 9, name: '构建', path: '/assembly/guide/structure'}
         ]
       }

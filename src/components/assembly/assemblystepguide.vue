@@ -3,22 +3,26 @@
     <div class="guite-process">
       <Row class="code-row-bg" type="flex">
         <div id="step-wrapper">
-            <assemblyStepItem 
-            v-for="(item, index) in stepLists" 
-            :key="index" 
+            <assemblyStepItem
+            v-for="(item, index) in stepLists"
+            :key="index"
             :stepItem="item"
             ></assemblyStepItem>
         </div>
-      
+
       </Row>
     </div>
-    <router-view></router-view>
+    <guide-content></guide-content>
+    <router-link to="/assembly/preview" tag="Button">下一步</router-link>
+    <router-link to="/assembly/cretae" tag="Button">上一步</router-link>
+    <!--<router-view></router-view>-->
   </div>
 </template>
 <script>
   import { EventBus } from '@/tools';
   import Sortable from 'sortablejs';
   import assemblyStepItem from './guide/assemblystep-item';
+  import GuideContent from './guide/guidecontent';
   export default {
     data() {
       return {
@@ -80,12 +84,12 @@
         }];
 
 
-       
+
         let  fileArray = null;
         fileArray = stepArray.splice(0, this.active);
         if (info) {
-      
-             
+
+
           for (let i = 0; i < fileArray.length; i++) {
 
             if (fileArray[i].index == info.index + 1) {
@@ -95,7 +99,7 @@
             }else{
               fileArray[i].active = false;
               fileArray[i].added = true;
-            
+
             }
           }
           if(info.added){
@@ -104,21 +108,21 @@
           }else{
             this.active = parseFloat(this.active) + 1;
           }
-          
+
         }else{
           this.active = parseFloat(this.active) + 1;
         }
         this.stepLists = fileArray;
-        
-        
-      
+
+
+
       },
-      
+
 
       bindMove(stepId){
         let vm = this;
         let todoList = document.getElementById(stepId);
-      
+
         Sortable.create(todoList, {
           group: {
             name: 'list',
@@ -128,7 +132,7 @@
           ghostClass: 'placeholder-style',
           fallbackClass: 'iview-admin-cloned-item',
           onMove: function(evt, originalEvent){
-  
+
           },
           onEnd: function(evt){
             EventBus.$emit('stepChange', {evt,item: vm.stepItem});
@@ -138,7 +142,8 @@
     },
 
     components: {
-      assemblyStepItem
+      assemblyStepItem,
+      GuideContent
     }
   }
 </script>

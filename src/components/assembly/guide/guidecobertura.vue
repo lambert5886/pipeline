@@ -29,6 +29,19 @@
                 <Option value="2">子目录</Option>
               </Select>
             </FormItem>
+            <FormItem>
+              <CheckboxGroup>
+                <Checkbox label="是否发布报告"></Checkbox>
+              </CheckboxGroup>
+              <Row>
+                <span>pattern</span>
+                <Input style="width: 150px"/>
+                <br/>
+                <span>html报告</span>
+                <Input style="width: 150px" placeholder="index.html"/>
+                <br/>
+              </Row>
+            </FormItem>
           </Row>
         </Row>
         <FormItem>
