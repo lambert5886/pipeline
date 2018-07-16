@@ -3,8 +3,7 @@ import App from './App'
 import router from './router'
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
-import jsPlumb from 'jsplumb'
-Vue.prototype.$jsPlumb = jsPlumb.jsPlumb
+
 
 import '@/style/common.css'
 import '@/style/reset.css'

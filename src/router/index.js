@@ -6,7 +6,7 @@ import AssemblyManage from '../components/assembly/assemblymanage'
 import AssemblyCreate from '../components/assembly/assemblycreate'
 import AssemblyStep from '../components/assembly/assemblystep'
 import AssemblyGuideStructure from '../components/assembly/guide/guidestructure'
-import AssemblyGuideFindbugs from '../components/assembly/guide/guidesfindbugs'
+import AssemblyGuideFindbugs from '../components/assembly/guide/guidefindbugs'
 import AssemblyPreview from '../components/assembly/assemblypreview'
 Vue.use(Router)
 export default new Router({
