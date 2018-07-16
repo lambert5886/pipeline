@@ -6,7 +6,13 @@ import AssemblyManage from '../components/assembly/assemblymanage'
 import AssemblyCreate from '../components/assembly/assemblycreate'
 import AssemblyStep from '../components/assembly/assemblystep'
 import AssemblyGuideStructure from '../components/assembly/guide/guidestructure'
+<<<<<<< .mine
 import AssemblyGuideFindbugs from '../components/assembly/guide/guidefindbugs'
+
+=======
+import AssemblyGuideFindbugs from '../components/assembly/guide/guidefindbugs'
+import AssemblyGuideFortify from '../components/assembly/guide/guidefortify'
+>>>>>>> .theirs
 import AssemblyPreview from '../components/assembly/assemblypreview'
 Vue.use(Router)
 export default new Router({
@@ -34,7 +40,8 @@ export default new Router({
     component: AssemblyStep,
     children: [
     {path: '/assembly/guide/structure', name: 'assembly_guide_structure', component: AssemblyGuideStructure},
-    {path: '/assembly/guide/findbugs', name: 'assembly_guide_findbugs', component: AssemblyGuideFindbugs}
+    {path: '/assembly/guide/findbugs', name: 'assembly_guide_findbugs', component: AssemblyGuideFindbugs},
+    {path: '/assembly/guide/fortify', name: 'assembly_guide_fortify', component: AssemblyGuideFortify}
     ]
   },
   ]
