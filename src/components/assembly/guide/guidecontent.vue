@@ -31,8 +31,8 @@
         stepName: 1,
         steps: [
           {stepId: 1, name: '单元测试',path: ''},
-          {stepId: 2, name: 'Fortify扫描', path: ''},
-          {stepId: 3, name: 'FindBugs', path: ''},
+          {stepId: 2, name: 'Fortify扫描', path: '/assembly/guide/fortify'},
+          {stepId: 3, name: 'FindBugs', path: '/assembly/guide/findbugs'},
           {stepId: 4, name: '代码获取', path: ''},
           {stepId: 5, name: 'Docekr镜像', path: ''},
           {stepId: 6, name: 'yaml部署', path: ''},
