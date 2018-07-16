@@ -2,51 +2,150 @@
   <div class="guide-container">
     <div class="guite-process">
       <Row class="code-row-bg" type="flex">
-        <Col>
-          <span class="icon-cricle"></span>
-          <span class="icon-arrow">=></span>
-        </Col>
-        <Col>
-          <!--<router-link to="/assembly/guide" @click="handleAdd">添加项目</router-link>-->
-          <div @click="handleAdd">
-            <span class="icon-add">+</span>
-          </div>
-        </Col>
-        <Col>
-          <span class="icon-arrow">=></span>
-          <span class="icon-cricle"></span>
-        </Col>
+        <div id="step-wrapper">
+            <assemblyStepItem 
+            v-for="(item, index) in stepLists" 
+            :key="index" 
+            :stepItem="item"
+            ></assemblyStepItem>
+        </div>
+      
       </Row>
     </div>
-    <guide-content :isShow="isShowContent"></guide-content>
-    <router-link to="/assembly/preview" tag="Button" type="primary">下一步</router-link>
-    <router-link to="/assembly/create" tag="Button" type="default">上一步</router-link>
+    <router-view></router-view>
   </div>
 </template>
 <script>
-  import GuideContent from '@/components/assembly/guide/guidecontent'
-
+  import { EventBus } from '@/tools';
+  import Sortable from 'sortablejs';
+  import assemblyStepItem from './guide/assemblystep-item';
   export default {
     data() {
       return {
-        isShowContent: false
+        stepLists: [],
+        active: 1,
       }
     },
-    watch: {
+    mounted() {
+      EventBus.$on('addStepItem', this.getItems);
+      EventBus.$on('stepChange', this.setepChange);
+      this.getItems();
+
+       document.body.ondrop = function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      };
+      this.bindMove('step-wrapper');
     },
     methods: {
-      handleAdd() {
-        this.isShowContent = true;
+      setepChange(info){
+        console.log('stepChange ::: ', info)
+      },
+      getItems(info) {
+
+        var stepArray = [{
+          stepId: 'step01',
+          active: true,
+          text: '编译构建',
+          index: 0,
+          added: false,
+        },
+        {
+          stepId: 'step02',
+          active: false,
+          text: 'findbugs扫描',
+          index: 1,
+          added: false,
+        },
+        {
+          stepId: 'step03',
+          active: false,
+          text: 'fortify安全扫描',
+          index: 2,
+          added: false,
+        },
+        {
+          stepId: 'step04',
+          active: false,
+          text: '单元测试',
+          index: 3,
+          added: false,
+        },
+        {
+          stepId: 'step05',
+          active: false,
+          text: '生成并上传镜像文件',
+          index: 4,
+          added: false,
+        }];
+
+
+       
+        let  fileArray = null;
+        fileArray = stepArray.splice(0, this.active);
+        if (info) {
+      
+             
+          for (let i = 0; i < fileArray.length; i++) {
+
+            if (fileArray[i].index == info.index + 1) {
+              fileArray[i].active = true;
+              fileArray[i].added = false;
+
+            }else{
+              fileArray[i].active = false;
+              fileArray[i].added = true;
+            
+            }
+          }
+          if(info.added){
+
+            return;
+          }else{
+            this.active = parseFloat(this.active) + 1;
+          }
+          
+        }else{
+          this.active = parseFloat(this.active) + 1;
+        }
+        this.stepLists = fileArray;
+        
+        
+      
+      },
+      
+
+      bindMove(stepId){
+        let vm = this;
+        let todoList = document.getElementById(stepId);
+      
+        Sortable.create(todoList, {
+          group: {
+            name: 'list',
+            pull: true
+          },
+          animation: 120,
+          ghostClass: 'placeholder-style',
+          fallbackClass: 'iview-admin-cloned-item',
+          onMove: function(evt, originalEvent){
+  
+          },
+          onEnd: function(evt){
+            EventBus.$emit('stepChange', {evt,item: vm.stepItem});
+          }
+        });
       }
     },
+
     components: {
-      GuideContent
+      assemblyStepItem
     }
   }
 </script>
 
 <style scoped lang="less">
-  .icon-cricle, .icon-add {
+  .icon-cricle,
+  .icon-add {
     display: inline-block;
     width: 30px;
     height: 30px;
@@ -57,12 +156,16 @@
     color: #fff;
   }
 
-  .icon-arrow, .icon-add {
+  .icon-arrow,
+  .icon-add {
     font-size: 20px;
     font-weight: bold;
   }
-
+ #step-wrapper{
+   width: 100%;
+ }
   .guite-process {
     height: 200px;
+    border-bottom: 1px solid #ccc;
   }
 </style>
