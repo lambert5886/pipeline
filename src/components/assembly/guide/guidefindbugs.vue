@@ -1,0 +1,80 @@
+<template>
+  <div class="structure-container">
+    <div class="from">
+      <Form ref="formValidate" :label-width="150">
+        <FormItem label="自定义名称">
+          <Input placeholder="请输入自定义的名称" style="width: 200px"></Input>
+        </FormItem>
+
+        <Row>
+          <span class="form-label">高级配置</span>
+          <Row class="high-level">
+            <FormItem label="jdk">
+              <Select style="width: 200px">
+                <Option value="jdk1.8">jdk1.8</Option>
+                <Option value="jdk">jdk</Option>
+              </Select>
+            </FormItem>
+            <FormItem label="maven">
+              <CheckboxGroup>
+                <Checkbox label="是否maven编译"></Checkbox>
+              </CheckboxGroup>
+              <Row>
+                <span>需要maven编译的子目录</span>
+                <Input style="width: 150px" />
+                <br />
+                <span>版本</span>
+                <Select style="width: 200px">
+                  <Option value="apache">apache-maven-3.0.4</Option>
+                  <Option value="3">apache</Option>
+                </Select>
+              </Row>
+            </FormItem>
+            <FormItem label="nodejs">
+              <CheckboxGroup >
+                <Checkbox label="是否nodejs编译"></Checkbox>
+              </CheckboxGroup>
+              <Row>
+                <span>需要maven编译的子目录</span>
+                <Input style="width: 150px" />
+                <br />
+                <span>版本</span>
+                <Select style="width: 200px">
+                  <Option value="8">node-v8.2.1</Option>
+                  <Option value="10">node-v10.2.1</Option>
+                </Select>
+              </Row>
+            </FormItem>
+          </Row>
+        </Row>
+        <FormItem>
+          <Button type="primary">确定</Button>
+          <Button type="ghost" style="margin-left: 8px">重置</Button>
+        </FormItem>
+      </Form>
+    </div>
+  </div>
+</template>
+<script>
+  export default {
+    data() {
+      return {}
+    }
+  }
+</script>
+<style scoped>
+  .high-level{
+    width: 70%;
+    margin: 20px auto;
+    padding: 10px 0;
+    border: 1px solid #21488a;
+  }
+  .form-label,.form-in-label {
+    width: 150px;
+    display: inline-block;
+    text-align: right;
+  }
+  .form-in-label{
+    width: 100px;
+  }
+</style>
