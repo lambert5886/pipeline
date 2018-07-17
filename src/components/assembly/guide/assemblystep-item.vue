@@ -33,7 +33,8 @@
     },
     methods: {
       addStep(info){
-        EventBus.$emit('addStepItem',info );
+        // this.$store.dispatch('add_step',info );
+        EventBus.$emit('add_step', info);
       },
     
     },

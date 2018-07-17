@@ -31,7 +31,7 @@
       }
     },
     mounted() {
-      EventBus.$on('addStepItem', this.getItems);
+      EventBus.$on('add_step', this.getItems);
       EventBus.$on('stepChange', this.setepChange);
       this.getItems();
 
