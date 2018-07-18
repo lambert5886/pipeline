@@ -13,8 +13,8 @@
     </div>
     <guide-content v-if="contentShow"></guide-content>
     <router-link to="/assembly/preview" tag="Button">下一步</router-link>
-    <router-link to="/assembly/cretae" tag="Button">上一步</router-link>
-   
+    <router-link to="/assembly/create" tag="Button">上一步</router-link>
+
   </div>
 </template>
 <script>
@@ -25,12 +25,12 @@
   export default {
     data() {
       return {
-      
+
         active: 1,
       }
     },
     mounted() {
-      
+
       this.getItems();
 
        document.body.ondrop = function (event) {
@@ -48,7 +48,7 @@
       setepChange(info){
         console.log('stepChange ::: ', info)
       },
-   
+
 
 
       bindMove(stepId){
