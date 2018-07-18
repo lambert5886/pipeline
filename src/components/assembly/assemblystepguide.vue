@@ -9,7 +9,6 @@
             :stepItem="item"
             ></assemblyStepItem>
         </div>
-
       </Row>
     </div>
     <guide-content></guide-content>
@@ -46,7 +45,6 @@
         console.log('stepChange ::: ', info)
       },
       getItems(info) {
-
         var stepArray = [{
           stepId: 'step01',
           active: true,

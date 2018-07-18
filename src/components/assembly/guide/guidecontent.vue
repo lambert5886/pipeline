@@ -1,5 +1,5 @@
 <template>
-  <div class="guide-content" v-show="isShow">
+  <div class="guide-content">
     流转到此步骤方式
     <Select style="width:200px">
       <Option value="auto">自动流转</Option>
@@ -20,12 +20,6 @@
 
 <script>
   export default {
-    props: {
-      isShow: {
-        type: Boolean,
-        default: true
-      }
-    },
     data() {
       return {
         stepName: 1,
@@ -34,7 +28,7 @@
           {stepId: 2, name: 'Fortify扫描', path: '/assembly/guide/fortify'},
           {stepId: 3, name: 'FindBugs', path: '/assembly/guide/findbugs'},
           {stepId: 4, name: '代码获取', path: ''},
-          {stepId: 5, name: 'Docekr镜像', path: ''},
+          {stepId: 5, name: 'Docekr镜像', path: '/assembly/guide/docker'},
           {stepId: 6, name: 'yaml部署', path: ''},
           {stepId: 7, name: '自定义脚本', path: ''},
           {stepId: 8, name: 'Cobertura', path: '/assembly/guide/cobertura'},
