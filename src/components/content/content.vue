@@ -38,6 +38,7 @@
 			setBread () {
 				var self = this;
 				this.routerobj = asideRouter;
+			
 				let obj = this.routerobj.find(item => {
 					return this.curRouterName.includes(item.name) === true;
 				})

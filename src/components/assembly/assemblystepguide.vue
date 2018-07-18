@@ -11,14 +11,17 @@
         </div>
       </Row>
     </div>
-    <guide-content v-if="contentShow"></guide-content>
-    <router-link to="/assembly/preview" tag="Button">下一步</router-link>
-    <router-link to="/assembly/cretae" tag="Button">上一步</router-link>
+    <div class="stepContent" v-if="contentShow">
+      <guide-content ></guide-content>
+      <router-link to="/assembly/preview" tag="Button">下一步</router-link>
+      <router-link to="/assembly/create" tag="Button">上一步</router-link>
+     
+    </div>
    
   </div>
 </template>
 <script>
-  import { EventBus } from '@/tools';
+  
   import Sortable from 'sortablejs';
   import assemblyStepItem from './guide/assemblystep-item';
   import GuideContent from './guide/guidecontent';
@@ -30,9 +33,7 @@
       }
     },
     mounted() {
-      
-      this.getItems();
-
+     
        document.body.ondrop = function (event) {
         event.preventDefault();
         event.stopPropagation();
