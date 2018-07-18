@@ -9,7 +9,6 @@
             :stepItem="item"
             ></assemblyStepItem>
         </div>
-
       </Row>
     </div>
     <guide-content v-if="contentShow"></guide-content>
