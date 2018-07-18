@@ -11,12 +11,6 @@
         </div>
       </Row>
     </div>
-<<<<<<< HEAD
-    <guide-content v-if="contentShow"></guide-content>
-    <router-link to="/assembly/preview" tag="Button">下一步</router-link>
-    <router-link to="/assembly/create" tag="Button">上一步</router-link>
-
-=======
     <div class="stepContent" v-if="contentShow">
       <guide-content ></guide-content>
       <router-link to="/assembly/preview" tag="Button">下一步</router-link>
@@ -24,7 +18,6 @@
      
     </div>
    
->>>>>>> 20a822be486060c79d6b134c96f2cbba94337adc
   </div>
 </template>
 <script>
@@ -40,13 +33,7 @@
       }
     },
     mounted() {
-<<<<<<< HEAD
-
-      this.getItems();
-
-=======
      
->>>>>>> 20a822be486060c79d6b134c96f2cbba94337adc
        document.body.ondrop = function (event) {
         event.preventDefault();
         event.stopPropagation();
