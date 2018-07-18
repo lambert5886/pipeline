@@ -30,6 +30,7 @@
 			},
 		},
 		created() {
+		
 			this.curRouterName = this.$router.history.current.name;
 			this.curRouterPath = this.$router.history.current.path;
 			this.setAsideList();
