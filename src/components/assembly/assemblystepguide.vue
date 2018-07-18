@@ -12,10 +12,10 @@
 
       </Row>
     </div>
-    <guide-content></guide-content>
+    <guide-content v-if="contentShow"></guide-content>
     <router-link to="/assembly/preview" tag="Button">下一步</router-link>
     <router-link to="/assembly/cretae" tag="Button">上一步</router-link>
-    <!--<router-view></router-view>-->
+   
   </div>
 </template>
 <script>
@@ -26,13 +26,12 @@
   export default {
     data() {
       return {
-        stepLists: [],
+      
         active: 1,
       }
     },
     mounted() {
-      EventBus.$on('add_step', this.getItems);
-      EventBus.$on('stepChange', this.setepChange);
+      
       this.getItems();
 
        document.body.ondrop = function (event) {
@@ -41,82 +40,16 @@
       };
       this.bindMove('step-wrapper');
     },
+    computed: {
+      stepLists(){
+        return this.$store.getters.stepList;
+      }
+    },
     methods: {
       setepChange(info){
         console.log('stepChange ::: ', info)
       },
-      getItems(info) {
-
-        var stepArray = [{
-          stepId: 'step01',
-          active: true,
-          text: '编译构建',
-          index: 0,
-          added: false,
-        },
-        {
-          stepId: 'step02',
-          active: false,
-          text: 'findbugs扫描',
-          index: 1,
-          added: false,
-        },
-        {
-          stepId: 'step03',
-          active: false,
-          text: 'fortify安全扫描',
-          index: 2,
-          added: false,
-        },
-        {
-          stepId: 'step04',
-          active: false,
-          text: '单元测试',
-          index: 3,
-          added: false,
-        },
-        {
-          stepId: 'step05',
-          active: false,
-          text: '生成并上传镜像文件',
-          index: 4,
-          added: false,
-        }];
-
-
-
-        let  fileArray = null;
-        fileArray = stepArray.splice(0, this.active);
-        if (info) {
-
-
-          for (let i = 0; i < fileArray.length; i++) {
-
-            if (fileArray[i].index == info.index + 1) {
-              fileArray[i].active = true;
-              fileArray[i].added = false;
-
-            }else{
-              fileArray[i].active = false;
-              fileArray[i].added = true;
-
-            }
-          }
-          if(info.added){
-
-            return;
-          }else{
-            this.active = parseFloat(this.active) + 1;
-          }
-
-        }else{
-          this.active = parseFloat(this.active) + 1;
-        }
-        this.stepLists = fileArray;
-
-
-
-      },
+   
 
 
       bindMove(stepId){

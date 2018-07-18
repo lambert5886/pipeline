@@ -1,10 +1,10 @@
 <template>
-  <div  class="step-item-wrapper" @click="addStep(stepItem)">
+  <div  class="step-item-wrapper" >
       <span class="handle">
         <img v-if="stepItem.active" src="@/assets/stepHandle.png" alt="">
       </span>
       <span class="addOrOk">
-        <img v-if="stepItem.active" src="@/assets/stepAdd.png" alt="">
+        <img v-if="stepItem.active" @click="addStep(stepItem)" src="@/assets/stepAdd.png" alt="">
         <img v-if="!stepItem.active" src="@/assets/stepOk.png" alt="">
         <font>{{stepItem.text}}</font>
       </span>
@@ -33,8 +33,8 @@
     },
     methods: {
       addStep(info){
-        // this.$store.dispatch('add_step',info );
-        EventBus.$emit('add_step', info);
+        this.$store.dispatch('add_step',info );
+        // EventBus.$emit('add_step', info);
       },
     
     },
