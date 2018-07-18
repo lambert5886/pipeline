@@ -1,20 +1,53 @@
 <template>
   <div class="guide-content">
-    流转到此步骤方式
-    <Select style="width:200px">
-      <Option value="auto">自动流转</Option>
-      <Option value="hand">手动流转</Option>
-    </Select>
-    <div class="form">
-      <Row style="margin-bottom: 20px;">
-        <span class="form-label">选择步骤：</span>
-        <Select v-model="stepName" style="width: 150px">
-          <Option v-for="step in steps" :value="step.stepId" :key="step.name" v-text="step.name">
-          </Option>
+    <layout>
+      <Sider hide-trigger :style="{background: '#fff'}">
+        <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']">
+          <Submenu name="1">
+            <template slot="title">
+              <Icon type="ios-navigate"></Icon>
+              Item 1
+            </template>
+            <MenuItem name="1-1">Option 1</MenuItem>
+            <MenuItem name="1-2">Option 2</MenuItem>
+            <MenuItem name="1-3">Option 3</MenuItem>
+          </Submenu>
+          <Submenu name="2">
+            <template slot="title">
+              <Icon type="ios-keypad"></Icon>
+              Item 2
+            </template>
+            <MenuItem name="2-1">Option 1</MenuItem>
+            <MenuItem name="2-2">Option 2</MenuItem>
+          </Submenu>
+          <Submenu name="3">
+            <template slot="title">
+              <Icon type="ios-analytics"></Icon>
+              Item 3
+            </template>
+            <MenuItem name="3-1">Option 1</MenuItem>
+            <MenuItem name="3-2">Option 2</MenuItem>
+          </Submenu>
+        </Menu>
+      </Sider>
+      <Content class="guide-content-box">
+        流转到此步骤方式
+        <Select style="width:200px">
+          <Option value="auto">自动流转</Option>
+          <Option value="hand">手动流转</Option>
         </Select>
-      </Row>
-      <router-view></router-view>
-    </div>
+        <div class="form">
+          <Row style="margin-bottom: 20px;">
+            <span class="form-label">选择步骤：</span>
+            <Select v-model="stepName" style="width: 150px">
+              <Option v-for="step in steps" :value="step.stepId" :key="step.name" v-text="step.name">
+              </Option>
+            </Select>
+          </Row>
+          <router-view></router-view>
+        </div>
+      </Content>
+    </layout>
   </div>
 </template>
 
@@ -24,7 +57,7 @@
       return {
         stepName: 1,
         steps: [
-          {stepId: 1, name: '单元测试',path: ''},
+          {stepId: 1, name: '单元测试', path: ''},
           {stepId: 2, name: 'Fortify扫描', path: '/assembly/guide/fortify'},
           {stepId: 3, name: 'FindBugs', path: '/assembly/guide/findbugs'},
           {stepId: 4, name: '代码获取', path: ''},
