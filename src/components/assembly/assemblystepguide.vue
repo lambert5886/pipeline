@@ -43,7 +43,12 @@
     computed: {
       stepLists(){
         return this.$store.getters.stepList;
+      },
+      contentShow(){
+        console.log(this.$store.getters.showContentStep)
+        return this.$store.getters.showContentStep;
       }
+      
     },
     methods: {
       setepChange(info){
