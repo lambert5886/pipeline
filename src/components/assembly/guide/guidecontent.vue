@@ -2,32 +2,12 @@
   <div class="guide-content">
     <layout>
       <Sider hide-trigger :style="{background: '#fff'}">
-        <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']">
-          <Submenu name="1">
-            <template slot="title">
-              <Icon type="ios-navigate"></Icon>
-              Item 1
-            </template>
-            <MenuItem name="1-1">Option 1</MenuItem>
-            <MenuItem name="1-2">Option 2</MenuItem>
-            <MenuItem name="1-3">Option 3</MenuItem>
-          </Submenu>
-          <Submenu name="2">
-            <template slot="title">
-              <Icon type="ios-keypad"></Icon>
-              Item 2
-            </template>
-            <MenuItem name="2-1">Option 1</MenuItem>
-            <MenuItem name="2-2">Option 2</MenuItem>
-          </Submenu>
-          <Submenu name="3">
-            <template slot="title">
-              <Icon type="ios-analytics"></Icon>
-              Item 3
-            </template>
-            <MenuItem name="3-1">Option 1</MenuItem>
-            <MenuItem name="3-2">Option 2</MenuItem>
-          </Submenu>
+        <Menu width="auto" active-name="plus" ref="asideMenu">
+          <MenuItem v-for="(guideItem, index) in curGuideItems" :key="index" v-text="guideItem.name"
+                    :name="index" @click.native="choseAsideItem(guideItem)"></MenuItem>
+          <MenuItem name="plus" style="text-align: center">
+            <Button type="primary" shape="circle" icon="plus-round" @click="submitGuide"></Button>
+          </MenuItem>
         </Menu>
       </Sider>
       <Content class="guide-content-box">
@@ -39,8 +19,8 @@
         <div class="form">
           <Row style="margin-bottom: 20px;">
             <span class="form-label">选择步骤：</span>
-            <Select v-model="stepName" style="width: 150px">
-              <Option v-for="step in steps" :value="step.stepId" :key="step.name" v-text="step.name">
+            <Select v-model="typeId" style="width: 150px">
+              <Option v-for="step in guideTypeItems" :value="step.typeId" :key="step.name" v-text="step.name">
               </Option>
             </Select>
           </Row>
@@ -52,27 +32,68 @@
 </template>
 
 <script>
+  import {guideTypeList} from '@/base/commonparam'
+  import {guide} from '@/base/commonparam'
+
   export default {
     data() {
       return {
-        stepName: 1,
-        steps: [
-          {stepId: 1, name: '单元测试', path: ''},
-          {stepId: 2, name: 'Fortify扫描', path: '/assembly/guide/fortify'},
-          {stepId: 3, name: 'FindBugs', path: '/assembly/guide/findbugs'},
-          {stepId: 4, name: '代码获取', path: ''},
-          {stepId: 5, name: 'Docekr镜像', path: '/assembly/guide/docker'},
-          {stepId: 6, name: 'yaml部署', path: ''},
-          {stepId: 7, name: '自定义脚本', path: ''},
-          {stepId: 8, name: 'Cobertura', path: '/assembly/guide/cobertura'},
-          {stepId: 9, name: '构建', path: '/assembly/guide/structure'}
-        ]
+        typeId: 0,
+        guideTypeItems: guideTypeList, // 引导指引所有的类型
+        curGuideItems: [],             // 点击某一个步骤时，当前步骤下的所有指引类型
+        guideItemIndex: 0,             // 当前步骤下指引列表的索引值
+      }
+    },
+    created() {
+      this.curGuideItems = guide.steps[0].stepsList;
+      this.guideItemIndex = this.curGuideItems.length;
+    },
+    methods: {
+      // 点击“+”号，保存右边输入的内容
+      submitGuide() {
+        let curStep = this._findCurStep();
+        if (typeof curStep === "undefined") {
+          return
+        }
+        curStep.id = this.guideItemIndex++;
+        console.log(curStep.id + ' curStep.id');
+        this.curGuideItems.push(curStep);
+        guide.steps[0].stepsList = this.curGuideItems;
+      },
+
+      choseAsideItem(guideItem){
+        // 如果数据上有path可以直接跳转路由
+        // this.$router.push({path: guideItem.path});
+
+        // 数据上没有path 要匹配之后再跳路由
+        // console.log(guideItem);
+        let curStep = this._findCurStep(guideItem.typeId);
+        this.$router.push({path: curStep.path, query:{guideItem: guideItem}});
+      },
+
+      // 点击“+”号，保存右边输入的内容
+      saveForm() {
+
+      },
+
+      // 点击“+”号,左边列表显示内容
+      handleAside() {
+
+      },
+
+      // 找到当前选择的 向导类型
+      _findCurStep(id) {
+        if (typeof id === 'undefined'){
+          return this.guideTypeItems.find(item => this.typeId === item.typeId);
+        } else {
+          return this.guideTypeItems.find(item => id === item.typeId);
+        }
       }
     },
     watch: {
-      stepName(val) {
-        let step = this.steps.find(item => val === item.stepId);
-        this.$router.push({path: step.path});
+      typeId() {
+        let curStep = this._findCurStep();
+        this.$router.push({path: curStep.path});
       }
     }
   }
@@ -94,5 +115,14 @@
     width: 150px;
     display: inline-block;
     text-align: right;
+  }
+
+  .guide-content-box {
+    background-color: #fff;
+    border-left: 1px solid #ccc;
+  }
+
+  .ivu-layout.ivu-layout-has-sider > .ivu-layout-content {
+    overflow-x: visible;
   }
 </style>

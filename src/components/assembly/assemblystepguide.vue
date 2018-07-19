@@ -15,9 +15,7 @@
       <guide-content ></guide-content>
       <router-link to="/assembly/preview" tag="Button">下一步</router-link>
       <router-link to="/assembly/create" tag="Button">上一步</router-link>
-
     </div>
-
   </div>
 </template>
 <script>
@@ -48,7 +46,7 @@
         console.log(this.$store.getters.showContentStep)
         return this.$store.getters.showContentStep;
       }
-      
+
     },
     methods: {
       setepChange(info){

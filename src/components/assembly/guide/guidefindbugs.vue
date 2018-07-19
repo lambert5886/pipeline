@@ -41,10 +41,10 @@
             </FormItem>
           </Row>
         </Row>
-        <FormItem>
-          <Button type="primary">确定</Button>
-          <Button type="ghost" style="margin-left: 8px">重置</Button>
-        </FormItem>
+        <!--<FormItem>-->
+          <!--<Button type="primary">确定</Button>-->
+          <!--<Button type="ghost" style="margin-left: 8px">重置</Button>-->
+        <!--</FormItem>-->
       </Form>
     </div>
   </div>
