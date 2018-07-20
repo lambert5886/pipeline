@@ -1,9 +1,9 @@
 <template>
   <div class="structure-container">
     <div class="from">
-      <Form ref="formValidate" :label-width="150">
-        <FormItem label="自定义名称">
-          <Input placeholder="请输入自定义的名称" style="width: 200px" v-model="name"></Input>
+      <Form ref="formValidate" :model="formValidate" :label-width="150" :rules="ruleValidate">
+        <FormItem label="自定义名称" prop="name">
+          <Input placeholder="请输入自定义的名称" style="width: 200px" v-model="formValidate.name"></Input>
         </FormItem>
         <FormItem label="源代码地址">
           <Select style="width: 200px">
@@ -22,8 +22,8 @@
             </Row>
           </Row>
         </FormItem>
-        <FormItem label="构建标识">
-          <Input placeholder="" style="width: 200px" v-model="mark"></Input>
+        <FormItem label="构建标识" prop="mark">
+          <Input placeholder="" style="width: 200px" v-model="formValidate.mark"></Input>
         </FormItem>
         <Row>
           <span class="form-label">高级配置</span>
@@ -75,27 +75,97 @@
   </div>
 </template>
 <script>
-  import {formData} from '@/base/commonparam'
+  import {guide, formDataStructure} from '@/base/commonparam'
 
   export default {
     data() {
       return {
-        name: '',
-        mark: '',
-        guideItem: this.$route.query.guideItem
+        isSuccess: false,  // 表单验证是否成功
+        guideItem: this.$route.query.guideItem,
+        formValidate: {
+          name: '',
+          mark: '',
+        },
+        ruleValidate: {
+          name: [
+            {required: true, message: '请输入姓名', trigger: 'blur'}
+          ],
+          mark: [
+            {required: true, message: '请输入标识', trigger: 'blur'}
+          ],
+        }
+      }
+    },
+    watch: {
+      $route: {
+        handler(val) {
+          if (val.query["id"]) {
+            this.formValidate.name = val.query.guideItem.form.name;
+            this.formValidate.mark = val.query.guideItem.form.mark;
+          } else {
+            this.formValidate.name = '';
+            this.formValidate.mark = '';
+          }
+        },
+        deep: true
       }
     },
     mounted() {
       this.setInitData();
     },
     methods: {
+      // 设置初始化数据
       setInitData() {
         if (typeof this.guideItem === 'undefined') {
-          this.name = '';
-          this.mark = '';
+          this.formValidate.name = '';
+          this.formValidate.mark = '';
         } else {
-          this.name = this.guideItem.form.name;
-          this.mark = this.guideItem.form.mark;
+          if (this.guideItem['form']) {
+            this.formValidate.name = this.guideItem.form.name;
+            this.formValidate.mark = this.guideItem.form.mark;
+          }
+        }
+      },
+
+      // 触发验证表单事件, 与父组件进行交互
+      verifyForm() {
+        this.handleSubmit();
+        return this.isSuccess;
+      },
+
+      // 触发表单验证事件
+      handleSubmit() {
+        this.$refs.formValidate.validate((valid) => {
+          if (valid) {
+            this.isSuccess = true;
+            this.saveFormData();
+          } else {
+            this.isSuccess = false;
+            // this.$Message.error('Fail!');
+          }
+        })
+      },
+
+      //  将表单数据添加到数据中
+      saveFormData() {
+        formDataStructure.name = this.formValidate.name;
+        formDataStructure.mark = this.formValidate.mark;
+
+        //  更改数据分两种情况，一种是已有数据更新，一种是新建数据
+        console.log(this.$route.query['id']);
+        if (!this.$route.query['id']) {
+          //  新建数据
+          let obj = {};
+          obj.id = guide.steps[0].stepsList.length + 1;
+          obj.stepId = 9;
+          obj.name = '构建';
+          obj.form = formDataStructure;
+          guide.steps[0].stepsList.push(obj);
+          this.$Message.success('添加成功!');
+          console.log(guide.steps[0].stepsList.length + '  stru')
+        } else {
+          //  已有数据更新
+          this.$Message.success('修改成功!');
         }
       }
     }

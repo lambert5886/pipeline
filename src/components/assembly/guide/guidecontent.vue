@@ -24,7 +24,7 @@
               </Option>
             </Select>
           </Row>
-          <router-view></router-view>
+          <router-view ref="verifyForm"></router-view>
         </div>
       </Content>
     </layout>
@@ -55,20 +55,29 @@
         if (typeof curStep === "undefined") {
           return
         }
-        curStep.id = this.guideItemIndex++;
-        console.log(curStep.id + ' curStep.id');
-        this.curGuideItems.push(curStep);
-        guide.steps[0].stepsList = this.curGuideItems;
+        // 验证表单
+        // this.$refs.verifyForm.verifyForm();
+        let isSuccess = this.$refs.verifyForm.verifyForm();
+        if (!isSuccess) {
+          return;
+        }
+        this.curGuideItems = guide.steps[0].stepsList;
+        console.log(this.curGuideItems);
+
+        // curStep.id = this.curGuideItems.length + 1;
+        // this.curGuideItems.push(curStep);
+        // guide.steps[0].stepsList = this.curGuideItems;
       },
 
-      choseAsideItem(guideItem){
+      choseAsideItem(guideItem) {
         // 如果数据上有path可以直接跳转路由
         // this.$router.push({path: guideItem.path});
 
         // 数据上没有path 要匹配之后再跳路由
-        // console.log(guideItem);
+        this.stepId = guideItem.typeId;
         let curStep = this._findCurStep(guideItem.typeId);
-        this.$router.push({path: curStep.path, query:{guideItem: guideItem}});
+        console.log(guideItem);
+        this.$router.push({path: curStep.path, query: {id: guideItem.id, guideItem: guideItem}});
       },
 
       // 点击“+”号，保存右边输入的内容
@@ -83,7 +92,7 @@
 
       // 找到当前选择的 向导类型
       _findCurStep(id) {
-        if (typeof id === 'undefined'){
+        if (typeof id === 'undefined') {
           return this.guideTypeItems.find(item => this.typeId === item.typeId);
         } else {
           return this.guideTypeItems.find(item => id === item.typeId);

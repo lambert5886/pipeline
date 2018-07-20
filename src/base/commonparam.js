@@ -44,6 +44,7 @@ export let guide = {
 }
 
 // 添加的form表单
-export let formData = {
+export let formDataStructure = {
   name: '',
+  mark: '',
 }
