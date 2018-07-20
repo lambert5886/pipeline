@@ -3,7 +3,7 @@
     <div class="from">
       <Form ref="formValidate" :label-width="150">
         <FormItem label="自定义名称">
-          <Input placeholder="请输入自定义的名称" style="width: 200px"></Input>
+          <Input placeholder="请输入自定义的名称" v-model="bugsData.name" style="width: 200px"></Input>
         </FormItem>
         <Row>
           <span class="form-label">
@@ -14,7 +14,7 @@
           <Row class="high-level">
             <span class="form-label">高级配置</span>
             <FormItem label="jdk">
-              <Select style="width: 200px">
+              <Select style="width: 200px" v-model="bugsData.peizhi">
                 <Option value="jdk1.8">jdk1.8</Option>
                 <Option value="jdk">jdk</Option>
               </Select>
@@ -24,7 +24,7 @@
               <br/>
             </FormItem>
             <FormItem label="扫描目录">
-              <Select style="width: 200px">
+              <Select style="width: 200px" v-model="bugsData.mulu">
                 <Option value="1">根目录</Option>
                 <Option value="2">子目录</Option>
               </Select>
@@ -35,7 +35,7 @@
               </CheckboxGroup>
               <Row>
                 <span>pattern</span>
-                <Input style="width: 150px" placeholder="coverage.xm;"/>
+                <Input style="width: 150px" v-model="bugsData.peizhi2" placeholder="coverage.xm;"/>
                 <br/>
               </Row>
             </FormItem>
@@ -50,10 +50,28 @@
   </div>
 </template>
 <script>
+  import { EventBus } from '@/tools';
   export default {
     data() {
-      return {}
+      return {
+        bugsData: {
+          name: '',
+          peizhi: '',
+          peizhi2: ''
+
+        }
+      }
+    },
+    mounted(){
+      EventBus.$on('getBugsData', this.fetchdata);
+    },
+    methods: {
+      fetchdata(){
+        console.log( 'bugsData   :::   ', this.bugsData);
+        this.$store.dispatch('add_bugsData', this.bugsData);
+      }
     }
+
   }
 </script>
 <style scoped>

@@ -34,7 +34,7 @@
 <script>
   import {guideTypeList} from '@/base/commonparam'
   import {guide} from '@/base/commonparam'
-
+  import { EventBus } from '@/tools';
   export default {
     data() {
       return {
@@ -51,6 +51,9 @@
     methods: {
       // 点击“+”号，保存右边输入的内容
       submitGuide() {
+        EventBus.$emit('getBugsData');
+        // this.$store.dispatch('bugsDataAdd');
+
         let curStep = this._findCurStep();
         if (typeof curStep === "undefined") {
           return
