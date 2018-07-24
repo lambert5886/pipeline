@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import App from './App'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 import router from './router'
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
@@ -11,6 +13,7 @@ import '@/style/reset.css'
 
 
 Vue.use(iView);
+Vue.use(VueAxios, axios);
 
 Vue.config.productionTip = false
 

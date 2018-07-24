@@ -53,8 +53,6 @@
         console.log('stepChange ::: ', info)
       },
 
-
-
       bindMove(stepId){
         let vm = this;
         let todoList = document.getElementById(stepId);
