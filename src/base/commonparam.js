@@ -13,7 +13,7 @@ export const guideTypeList = [
 
 
 // 整个引导指引的 类目结构
-export let guide = {
+export const guide = {
   steps: [
     {
       name: 'stpe1',

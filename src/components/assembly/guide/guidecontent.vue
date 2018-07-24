@@ -24,7 +24,9 @@
               </Option>
             </Select>
           </Row>
-          <router-view ref="verifyForm"></router-view>
+          <!--<keep-alive>-->
+            <router-view ref="verifyForm"></router-view>
+          <!--</keep-alive>-->
         </div>
       </Content>
     </layout>
@@ -51,25 +53,17 @@
     methods: {
       // 点击“+”号，保存右边输入的内容
       submitGuide() {
-        EventBus.$emit('getBugsData');
-        // this.$store.dispatch('bugsDataAdd');
-
         let curStep = this._findCurStep();
         if (typeof curStep === "undefined") {
           return
         }
         // 验证表单
-        // this.$refs.verifyForm.verifyForm();
         let isSuccess = this.$refs.verifyForm.verifyForm();
         if (!isSuccess) {
           return;
         }
+        console.log(guide.steps[0].stepsList);
         this.curGuideItems = guide.steps[0].stepsList;
-        console.log(this.curGuideItems);
-
-        // curStep.id = this.curGuideItems.length + 1;
-        // this.curGuideItems.push(curStep);
-        // guide.steps[0].stepsList = this.curGuideItems;
       },
 
       choseAsideItem(guideItem) {
@@ -81,16 +75,6 @@
         let curStep = this._findCurStep(guideItem.typeId);
         console.log(guideItem);
         this.$router.push({path: curStep.path, query: {id: guideItem.id, guideItem: guideItem}});
-      },
-
-      // 点击“+”号，保存右边输入的内容
-      saveForm() {
-
-      },
-
-      // 点击“+”号,左边列表显示内容
-      handleAside() {
-
       },
 
       // 找到当前选择的 向导类型

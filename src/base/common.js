@@ -6,13 +6,19 @@
   *
 */
 // this.guideTypeItems.find(item => this.typeId === item.typeId);
-import guide from './commonparam'
-export function addGuideList(stepsId, listId, typeId, typeName, form) {
-  let obj = {};
-  obj.id = listId;
-  obj.stepId = typeId;
-  obj.name = typeName;
-  obj.form = form;
-  guide.steps[0].stepsList.push(obj);
-  console.log(guide.steps[0].stepsList.length + '  stru');
+// import {guide} from './commonparam'
+// export function addGuideList(stepsId, listId, typeId, typeName, form) {
+//   console.log('hello');
+//   let obj = {};
+//   stepsId = 0;
+//   obj.id = listId;
+//   obj.stepId = typeId;
+//   obj.name = typeName;
+//   obj.form = form;
+//   guide.steps[stepsId].stepsList.push(obj);
+//   console.log(guide.steps[stepsId]);
+// }
+
+export function searchItem(list, key) {
+  return list.find(item => item[key] === key);
 }

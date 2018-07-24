@@ -75,7 +75,8 @@
   </div>
 </template>
 <script>
-  import {guide, formDataStructure} from '@/base/commonparam'
+  import {guide} from '@/base/commonparam'
+  import {addGuideList} from '@/base/common'
 
   export default {
     data() {
@@ -100,6 +101,7 @@
       $route: {
         handler(val) {
           if (val.query["id"]) {
+            console.log(val.query.guideItem.form)
             this.formValidate.name = val.query.guideItem.form.name;
             this.formValidate.mark = val.query.guideItem.form.mark;
           } else {
@@ -141,30 +143,40 @@
             this.saveFormData();
           } else {
             this.isSuccess = false;
-            // this.$Message.error('Fail!');
           }
         })
       },
 
       //  将表单数据添加到数据中
       saveFormData() {
-        formDataStructure.name = this.formValidate.name;
-        formDataStructure.mark = this.formValidate.mark;
-
         //  更改数据分两种情况，一种是已有数据更新，一种是新建数据
-        console.log(this.$route.query['id']);
         if (!this.$route.query['id']) {
+          console.log('no id')
           //  新建数据
+          let form = {
+            name: this.formValidate.name,
+            mark: this.formValidate.mark
+          }
+          // addGuideList(0, guide.steps[0].stepsList.length, '9', '构建', this.formValidate
+          // );
           let obj = {};
-          obj.id = guide.steps[0].stepsList.length + 1;
+          obj.id = guide.steps[0].stepsList.length;
           obj.stepId = 9;
           obj.name = '构建';
-          obj.form = formDataStructure;
+          obj.form = {
+            name: this.formValidate.name,
+            mark: this.formValidate.mark
+          }
           guide.steps[0].stepsList.push(obj);
           this.$Message.success('添加成功!');
-          console.log(guide.steps[0].stepsList.length + '  stru')
         } else {
           //  已有数据更新
+          let id = this.$route.query['id'];
+          let curItem = guide.steps[0].stepsList.find(item => id === item.id);
+          curItem.form = {
+            name: this.formValidate.name,
+            mark: this.formValidate.mark
+          }
           this.$Message.success('修改成功!');
         }
       }
