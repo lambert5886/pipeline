@@ -3,7 +3,7 @@
     <div class="from">
       <Form ref="formValidate" :label-width="150">
         <FormItem label="自定义名称">
-          <Input placeholder="请输入自定义的名称" style="width: 200px"></Input>
+          <Input v-model="fortify.stepName" placeholder="请输入自定义的名称" style="width: 200px"></Input>
         </FormItem>
         <Row>
           <span class="form-label">
@@ -14,7 +14,7 @@
           <Row class="high-level">
             <span class="form-label">高级配置</span>
             <FormItem label="jdk">
-              <Select style="width: 200px">
+              <Select v-model="fortify.peizhi" style="width: 200px">
                 <Option value="jdk1.8">jdk1.8</Option>
                 <Option value="jdk">jdk</Option>
               </Select>
@@ -24,26 +24,42 @@
               <br/>
             </FormItem>
             <FormItem label="扫描目录">
-              <Select style="width: 200px">
+              <Select v-model="fortify.mulu" style="width: 200px">
                 <Option value="1">根目录</Option>
                 <Option value="2">子目录</Option>
               </Select>
             </FormItem>
           </Row>
         </Row>
-        <!--<FormItem>-->
-          <!--<Button type="primary">确定</Button>-->
-          <!--<Button type="ghost" style="margin-left: 8px">重置</Button>-->
-        <!--</FormItem>-->
+        <!-- <FormItem>
+          <Button type="primary" @click="submitData">确定</Button>
+          <Button type="ghost" style="margin-left: 8px">预览</Button>
+        </FormItem> -->
       </Form>
     </div>
   </div>
 </template>
 <script>
+  import { EventBus } from '@/tools';
   export default {
     data() {
       return {
+       fortify: {
+
+       }
+      }
+    },
+    mounted(){
+     
+      var _str = this.$route.name;
+      EventBus.$on('_str', this.submitData)
+
+      console.log(' from fortify >>>   ', )
+    },
+    methods: {
+      submitData(){
        
+        this.$store.dispatch('add_fortifyData', this.fortify);
       }
     }
   }

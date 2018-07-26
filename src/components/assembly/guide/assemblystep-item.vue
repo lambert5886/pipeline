@@ -1,15 +1,29 @@
 <template>
   <div  class="step-item-wrapper" >
       <span class="handle">
-        <img v-if="stepItem.active" src="@/assets/stepHandle.png" alt="">
+        <img v-if="stageItem.active" src="@/assets/stepHandle.png" alt="">
       </span>
       <span class="addOrOk">
-        <img v-if="stepItem.active" @click="addStep(stepItem)" src="@/assets/stepAdd.png" alt="">
-        <img v-if="!stepItem.active" src="@/assets/stepOk.png" alt="">
-        <font>{{stepItem.text}}</font>
+
+          <Icon  v-if="stageItem.active" 
+                 type="plus-circled"  
+                 @click="addStageHandle(stageItem.stageId)"
+                 color="blue" size="28"></Icon>
+          <Icon  v-if="!stageItem.active" 
+                 color="blue" 
+                 size="28"
+                 @click="showStage"  
+                 type="checkmark-circled"></Icon>
+       <font>
+          {{ stageItem.stageName }}
+       </font>
+     
       </span>
       <span class="arrow">
-        <img src="@/assets/stepArrow.png" alt="">
+          <Icon type="arrow-right-a" 
+                color="blue" 
+                size="28"></Icon>
+       
       </span>
   </div>
 </template>
@@ -18,11 +32,19 @@
   
   export default{
     props: {
-      stepItem: {
+      stageItem: {
         type: Object,
         default: function(){
           return {}
         }
+      }
+    },
+    data(){
+      return {
+       
+        stage: {
+            
+            }
       }
     },
     mounted(){
@@ -30,10 +52,14 @@
       
     },
     methods: {
-      addStep(info){
-        this.$store.dispatch('add_step',info );
+      addStageHandle(info){ 
+
+        this.$store.dispatch('add_stage', info );
         // EventBus.$emit('add_step', info);
       },
+      showStage(){
+
+      }
     
     },
     data(){
@@ -61,7 +87,7 @@
     display: inline-block;
     float: left;
     clear: both;
-    width: 70%;
+    width: 60%;
     text-align: center;
   }
   .addOrOk font{
@@ -72,7 +98,7 @@
   .arrow{
     display: inline-block;
     float: left;
-    margin-top: 8px;
+    margin-top: 2px;
   }
 
 </style>

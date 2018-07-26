@@ -11,11 +11,7 @@
         </Menu>
       </Sider>
       <Content class="guide-content-box">
-        流转到此步骤方式
-        <Select style="width:200px">
-          <Option value="auto">自动流转</Option>
-          <Option value="hand">手动流转</Option>
-        </Select>
+    
         <div class="form">
           <Row style="margin-bottom: 20px;">
             <span class="form-label">选择步骤：</span>
@@ -25,8 +21,9 @@
             </Select>
           </Row>
           <!--<keep-alive>-->
-            <router-view ref="verifyForm"></router-view>
+            <!-- <router-view ref="verifyForm"></router-view> -->
           <!--</keep-alive>-->
+          <component is=""></component>
         </div>
       </Content>
     </layout>
@@ -47,7 +44,7 @@
       }
     },
     created() {
-      this.curGuideItems = guide.steps[0].stepsList;
+      // this.curGuideItems = guide.steps[0].stepsList;
       this.guideItemIndex = this.curGuideItems.length;
     },
     methods: {
@@ -58,39 +55,37 @@
           return
         }
         // 验证表单
-        let isSuccess = this.$refs.verifyForm.verifyForm();
-        if (!isSuccess) {
-          return;
-        }
-        console.log(guide.steps[0].stepsList);
-        this.curGuideItems = guide.steps[0].stepsList;
+        // let isSuccess = this.$refs.verifyForm.verifyForm();
+        console.log(' from step Id  :::   ', this.typeId)
+        EventBus.$emit(curStep.name, this.typeId);
+     
       },
+  
+    //   choseAsideItem(guideItem) {
+    //     // 如果数据上有path可以直接跳转路由
+    //     // this.$router.push({path: guideItem.path});
 
-      choseAsideItem(guideItem) {
-        // 如果数据上有path可以直接跳转路由
-        // this.$router.push({path: guideItem.path});
+    //     // 数据上没有path 要匹配之后再跳路由
+    //     this.stepId = guideItem.typeId;
+    //     let curStep = this._findCurStep(guideItem.typeId);
+    //     console.log(guideItem);
+    //     this.$router.push({path: curStep.path, query: {id: guideItem.id, guideItem: guideItem}});
+    //   },
 
-        // 数据上没有path 要匹配之后再跳路由
-        this.stepId = guideItem.typeId;
-        let curStep = this._findCurStep(guideItem.typeId);
-        console.log(guideItem);
-        this.$router.push({path: curStep.path, query: {id: guideItem.id, guideItem: guideItem}});
-      },
-
-      // 找到当前选择的 向导类型
-      _findCurStep(id) {
-        if (typeof id === 'undefined') {
-          return this.guideTypeItems.find(item => this.typeId === item.typeId);
-        } else {
-          return this.guideTypeItems.find(item => id === item.typeId);
-        }
-      }
-    },
-    watch: {
-      typeId() {
-        let curStep = this._findCurStep();
-        this.$router.push({path: curStep.path});
-      }
+    //   // 找到当前选择的 向导类型
+    //   _findCurStep(id) {
+    //     if (typeof id === 'undefined') {
+    //       return this.guideTypeItems.find(item => this.typeId === item.typeId);
+    //     } else {
+    //       return this.guideTypeItems.find(item => id === item.typeId);
+    //     }
+    //   }
+    // },
+    // watch: {
+    //   typeId() {
+    //     let curStep = this._findCurStep();  
+    //     this.$router.push({path: curStep.path});
+    //   }
     }
   }
 </script>
