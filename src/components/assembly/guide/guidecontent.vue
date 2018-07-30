@@ -2,13 +2,34 @@
   <div class="guide-content">
     <layout>
       <Sider hide-trigger :style="{background: '#fff'}">
-        <Menu width="auto" active-name="plus" ref="asideMenu">
-          <MenuItem v-for="(guideItem, index) in curGuideItems" :key="index" v-text="guideItem.name"
-                    :name="index" @click.native="choseAsideItem(guideItem)"></MenuItem>
-          <MenuItem name="plus" style="text-align: center">
-            <Button type="primary" shape="circle" icon="plus-round" @click="submitGuide"></Button>
-          </MenuItem>
+      <Menu width="auto" active-name="plus" ref="asideMenu">
+            <draggable v-model="curGuideStepItems" 
+                      :options="{animation: 300,draggable:'.menu-item-wrapper'}"
+                      @end="onEnd">
+                <div class="menu-item-wrapper"
+                     v-for="(guideItem, index) in curGuideStepItems"
+                     :key="index">   
+                    <MenuItem
+                              v-text="guideItem.stepName"
+                              :name="index" 
+                              :id="guideItem.stepId + guideItem.stepIndex"
+                              @click.native="choseAsideItem(guideItem)">
+                    </MenuItem>
+                    <Icon size="18"
+                          color="blue"
+                          type="close-circled"
+                          @click="deleteStep(guideItem)"></Icon>  
+              </div>
+              <div slot="footer" style="text-align: center;margin-top: 10px;">
+                <Button type="primary"  shape="circle" icon="plus-round" @click.capture.stop="submitGuide"></Button>
+            
+              </div>
+
+            </draggable> 
         </Menu>
+      
+
+       
       </Sider>
       <Content class="guide-content-box">
     
@@ -23,7 +44,10 @@
           <!--<keep-alive>-->
             <!-- <router-view ref="verifyForm"></router-view> -->
           <!--</keep-alive>-->
-          <component is=""></component>
+          
+            <component v-bind:is="currentComponent"></component>
+          
+         
         </div>
       </Content>
     </layout>
@@ -32,61 +56,90 @@
 
 <script>
   import {guideTypeList} from '@/base/commonparam'
-  import {guide} from '@/base/commonparam'
+
   import { EventBus } from '@/tools';
+  import draggable from 'vuedraggable';
+  import Vue from 'vue';
+  Vue.component('none',() => import('./guidenone'));
+  Vue.component('fortify',() => import('./guidefortify'));
+  Vue.component('findbugs',() => import('./guidefindbugs'));
+  Vue.component('findbugspublish', () => import('./guidefindbugspublish'));
+  Vue.component('docker', () => import('./guidedocker'));
+ 
+
   export default {
     data() {
       return {
         typeId: 0,
-        guideTypeItems: guideTypeList, // 引导指引所有的类型
-        curGuideItems: [],             // 点击某一个步骤时，当前步骤下的所有指引类型
-        guideItemIndex: 0,             // 当前步骤下指引列表的索引值
+        guideTypeItems: guideTypeList,
+        currentComponent: 'none'                
+      
       }
     },
-    created() {
-      // this.curGuideItems = guide.steps[0].stepsList;
-      this.guideItemIndex = this.curGuideItems.length;
+    mounted() {
+    
+      if(this.typeId == 0){
+        this.currentComponent = 'none';
+      }
     },
+    computed: {
+      curGuideStepItems: {
+        get(){
+          return this.$store.getters.getSteps;
+        },
+        set(value){
+          console.log(' from step set >>>  ', value)
+          this.$store.dispatch('changeStepIndex', value);
+        }
+      }
+    },
+
     methods: {
       // 点击“+”号，保存右边输入的内容
       submitGuide() {
-        let curStep = this._findCurStep();
-        if (typeof curStep === "undefined") {
-          return
-        }
-        // 验证表单
-        // let isSuccess = this.$refs.verifyForm.verifyForm();
-        console.log(' from step Id  :::   ', this.typeId)
-        EventBus.$emit(curStep.name, this.typeId);
-     
+       console.log('触发 事件  >>>  ', this.typeId )
+        EventBus.$emit('add_' + this.typeId);
+      
+        this.curGuideStepItems = this.$store.getters.getSteps;
+        
+      },
+      onEnd(evt){
+        console.log( 'from event >>> ', evt)
+    },
+      choseAsideItem(item){
+        console.log(' from step item >>>  ', item);
+        this.currentComponent = item.stepId;
+        EventBus.$emit('echo_' + item.stepId, item);
+      },
+      changeStepHandle(info){
+        // this.$store.dispatch('changeStepIndex', info);
+      },
+      deleteStep(item){
+        console.log(' from delete item  >>> ', item);
+        this.$store.dispatch('deleteStep', item);
       },
   
-    //   choseAsideItem(guideItem) {
-    //     // 如果数据上有path可以直接跳转路由
-    //     // this.$router.push({path: guideItem.path});
+  
+     },
+     watch: {
+      typeId() {
+       
+       let _typeItems = this.guideTypeItems;
 
-    //     // 数据上没有path 要匹配之后再跳路由
-    //     this.stepId = guideItem.typeId;
-    //     let curStep = this._findCurStep(guideItem.typeId);
-    //     console.log(guideItem);
-    //     this.$router.push({path: curStep.path, query: {id: guideItem.id, guideItem: guideItem}});
-    //   },
-
-    //   // 找到当前选择的 向导类型
-    //   _findCurStep(id) {
-    //     if (typeof id === 'undefined') {
-    //       return this.guideTypeItems.find(item => this.typeId === item.typeId);
-    //     } else {
-    //       return this.guideTypeItems.find(item => id === item.typeId);
-    //     }
-    //   }
-    // },
-    // watch: {
-    //   typeId() {
-    //     let curStep = this._findCurStep();  
-    //     this.$router.push({path: curStep.path});
-    //   }
+       for(let i = 0; i < _typeItems.length; i++){
+         if(this.typeId == _typeItems[i].typeId){
+          this.currentComponent = _typeItems[i].typeId;
+         this.typeId = _typeItems[i].typeId;
+         }
+       };
+       
+       console.log(this.currentComponent)
+      }
+    },
+    components: {
+      draggable
     }
+ 
   }
 </script>
 
@@ -112,7 +165,22 @@
     background-color: #fff;
     border-left: 1px solid #ccc;
   }
-
+  .menu-item-wrapper{
+    position: relative;
+  }
+  .menu-item-wrapper .ivu-icon{
+    display: none;
+    position: absolute;
+    right: 20px;
+     top:30%;
+  }
+  .menu-item-wrapper .ivu-icon:hover{
+    cursor: pointer;
+  }
+  .menu-item-wrapper:hover .ivu-icon{
+    z-index: 3;
+    display: inline-block;
+  }
   .ivu-layout.ivu-layout-has-sider > .ivu-layout-content {
     overflow-x: visible;
   }

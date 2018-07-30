@@ -5,46 +5,34 @@
         <FormItem label="自定义名称">
           <Input placeholder="请输入自定义的名称" v-model="bugsData.name" style="width: 200px"></Input>
         </FormItem>
-        <Row>
-          <span class="form-label">
-            <CheckboxGroup>
-            <Checkbox label="代码是否来自上一阶段"></Checkbox>
-          </CheckboxGroup>
-          </span>
-          <Row class="high-level">
-            <span class="form-label">高级配置</span>
-            <FormItem label="jdk">
-              <Select style="width: 200px" v-model="bugsData.peizhi">
-                <Option value="jdk1.8">jdk1.8</Option>
-                <Option value="jdk">jdk</Option>
-              </Select>
-            </FormItem>
-            <FormItem label="maven">
-              <Input style="width: 150px"/>
-              <br/>
-            </FormItem>
-            <FormItem label="扫描目录">
-              <Select style="width: 200px" v-model="bugsData.mulu">
-                <Option value="1">根目录</Option>
-                <Option value="2">子目录</Option>
-              </Select>
-            </FormItem>
-            <FormItem>
-              <CheckboxGroup>
-                <Checkbox label="是否发布报告"></Checkbox>
-              </CheckboxGroup>
-              <Row>
-                <span>pattern</span>
-                <Input style="width: 150px" v-model="bugsData.peizhi2" placeholder="coverage.xm;"/>
-                <br/>
-              </Row>
-            </FormItem>
-          </Row>
-        </Row>
-        <!--<FormItem>-->
-          <!--<Button type="primary">确定</Button>-->
-          <!--<Button type="ghost" style="margin-left: 8px">重置</Button>-->
-        <!--</FormItem>-->
+        
+          <FormItem label="jdk版本">
+            <Select style="width: 200px" v-model="bugsData.peizhi">
+              <Option value="jdk1.8">jdk1.8</Option>
+              <Option value="jdk1.8">jdk1.7</Option>
+              <Option value="jdk1.8">jdk1.6</Option>
+            </Select>
+          </FormItem>
+          <FormItem label="maven版本">
+            <Select style="width: 200px" v-model="bugsData.maven">
+              <Option value="node-v8.2.1-linux-x64">node-v8.2.1-linux-x64</Option>
+              <Option value="node-v8.2.1-linux-x32">node-v8.2.1-linux-x32</Option>
+              
+            </Select>
+           
+          </FormItem>
+          <FormItem label="扫描目录">
+            <Select style="width: 200px" v-model="bugsData.mulu">
+              <Option value="1">根目录</Option>
+              <Option value="2">子目录</Option>
+            </Select>
+          </FormItem>
+          <FormItem label="findbugs命令">        
+            <Input style="width: 150px" v-model="bugsData.peizhi2" placeholder="mvn findbugs:findbugs"/>
+           
+          </FormItem>
+       
+     
       </Form>
     </div>
   </div>
@@ -62,8 +50,12 @@
         }
       }
     },
+    created(){
+      console.log(' findbugs  >>> created')
+    },
     mounted(){
-      EventBus.$on('getBugsData', this.fetchdata);
+      console.log(' findbugs  >>> mounted')
+      EventBus.$on('add_findbugs', this.fetchdata);
     },
     methods: {
       fetchdata(){

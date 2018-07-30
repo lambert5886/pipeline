@@ -13,5 +13,12 @@ const fortifyData = {
     [FORTIFY_DATA](state, info){
       state.list.push(info);
     }
+  },
+  getters: {
+    fortifyDataList(){
+      return true;
+    }
   }
-}
+};
+
+export default fortifyData;

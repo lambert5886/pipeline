@@ -5,36 +5,29 @@
         <FormItem label="自定义名称">
           <Input v-model="fortify.stepName" placeholder="请输入自定义的名称" style="width: 200px"></Input>
         </FormItem>
-        <Row>
-          <span class="form-label">
-            <CheckboxGroup>
-            <Checkbox label="代码是否来自上一阶段"></Checkbox>
-          </CheckboxGroup>
-          </span>
-          <Row class="high-level">
-            <span class="form-label">高级配置</span>
-            <FormItem label="jdk">
-              <Select v-model="fortify.peizhi" style="width: 200px">
-                <Option value="jdk1.8">jdk1.8</Option>
-                <Option value="jdk">jdk</Option>
-              </Select>
-            </FormItem>
-            <FormItem label="maven">
-              <Input style="width: 150px"/>
-              <br/>
-            </FormItem>
-            <FormItem label="扫描目录">
-              <Select v-model="fortify.mulu" style="width: 200px">
-                <Option value="1">根目录</Option>
-                <Option value="2">子目录</Option>
-              </Select>
-            </FormItem>
-          </Row>
-        </Row>
-        <!-- <FormItem>
-          <Button type="primary" @click="submitData">确定</Button>
-          <Button type="ghost" style="margin-left: 8px">预览</Button>
-        </FormItem> -->
+        <FormItem label="jdk版本">
+          <Select v-model="fortify.peizhi" style="width: 200px">
+            <Option value="jdk1.8">jdk1.8</Option>
+            <Option value="jdk">jdk</Option>
+          </Select>
+        </FormItem>
+        <FormItem label="maven版本">
+          <Input style="width: 150px"/>
+          <br/>
+        </FormItem>
+        <FormItem label="扫描目录">
+          <Select v-model="fortify.mulu" style="width: 200px">
+            <Option value="1">根目录</Option>
+            <Option value="2">子目录</Option>
+          </Select>
+        </FormItem>
+        <FormItem label="fortify命令"  >
+          <Input v-model="fortify.other" 
+                 type="textarea" placeholder="Enter something..." />
+    
+        </FormItem>
+
+      
       </Form>
     </div>
   </div>
@@ -45,22 +38,33 @@
     data() {
       return {
        fortify: {
-
+       
        }
       }
     },
     mounted(){
      
-      var _str = this.$route.name;
-      EventBus.$on('_str', this.submitData)
-
-      console.log(' from fortify >>>   ', )
+      EventBus.$on('add_fortify', this.submitData);
+      EventBus.$on('echo_fortify', this.echoData);
+ 
     },
     methods: {
       submitData(){
-       
-        this.$store.dispatch('add_fortifyData', this.fortify);
+        let _fortifyData = Object.assign({}, {stepId: 'fortify'}, this.fortify);
+        // this.$store.dispatch('add_fortifyData', this.fortify);
+      
+        this.$store.dispatch('add_to_stepLists', _fortifyData);
+      },
+      echoData(item){
+        let _data = this.$store.getters.getSteps;
+        let index = item.stepIndex;
+      
+       this.fortify = _data[index];
+
       }
+    },
+    beforeDestroy(){
+      EventBus.$off('add_fortify');
     }
   }
 </script>

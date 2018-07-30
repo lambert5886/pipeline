@@ -10,7 +10,7 @@ const addStage = {
       active: false,
       transferMode: '',
       transferPerson: '',
-      transferNext: ''
+     
     },
     stageList: [
       {
@@ -20,9 +20,7 @@ const addStage = {
         active: true,
         transferMode: '',
         transferPerson: '',
-        transferPrev: '',
-        transferNext: '',
-       
+  
       }
     ]
   },
