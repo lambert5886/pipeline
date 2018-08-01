@@ -65,6 +65,9 @@
       EventBus.$on('echoStage', this.echoStage);
       EventBus.$on('add_toStage', this.addStepToStage);
     },
+    beforeDestory(){
+      console.log('  stepguide destorey >>>  ');
+    },
     computed: {
      
       contentShow(){
@@ -90,10 +93,12 @@
         }
       },
       echoStage(info){
-       console.log(' from ehcoStage >>>  ', info)
-
        Object.assign(this.stage, info);
-       console.log(' from echostage 222 >>>', this.stage)
+       let steps = this.stage.stepList;
+      
+      EventBus.$emit('echoStep', steps);
+      EventBus.$emit('initComponent',steps[0])
+    
       },
       addStepToStage(){
         let steps = this.$store.getters.getSteps;

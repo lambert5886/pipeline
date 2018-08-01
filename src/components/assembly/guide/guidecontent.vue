@@ -76,8 +76,15 @@
       
       }
     },
+    beforeCreated(){
+   },
+    created(){
+      console.log('  created >>> ');
+   
+    },
     mounted() {
       EventBus.$on('initComponent', this.initComponent);
+      EventBus.$on('echoStep', this.echoStep);
       if(this.typeId == 0){
         this.currentComponent = 'none';
       }
@@ -92,7 +99,8 @@
         }
       }
     },
-
+    beforeDestroy(){
+      },
     methods: {
       // 点击“+”号，保存右边输入的内容
       submitGuide() {
@@ -101,13 +109,27 @@
         this.curGuideStepItems = this.$store.getters.getSteps;
         
       },
-      initComponent(){
+      initComponent(info){
         this.currentComponent = 'none';
-        this.typeId = 0;
+        if(info){
+          this.typeId = info.stepId;
+          }else{
+          this.typeId = 0;
+        }
       },
-      onEnd(evt){
+      onEnd(evt){},
+      echoStep(info){
+        console.log(' from echoStep >>>  ', info)
+        let steps =  this.$store.state.addStep.steps;
+        if(steps.length > 0){
+          steps = [];
+          steps.push(...info);
+        }else{
+          steps.push(...info);
+        }
        
-    },
+       
+      },
       choseAsideItem(item){
         this.currentComponent = item.stepId;
         EventBus.$emit('echo_' + item.stepId, item);

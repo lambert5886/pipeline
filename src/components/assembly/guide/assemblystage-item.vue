@@ -20,7 +20,7 @@
               <Icon  v-if="!stageItem.active" 
                      color="blue" 
                      size="28"
-                     @click="showStage(stageItem)"  
+                     @click="echoCurrentStage(stageItem)"  
                      type="checkmark-circled"></Icon>
            <font>
               {{ stageItem.stageName }}
@@ -66,14 +66,7 @@
   import draggable from 'vuedraggable';
   import { EventBus } from '@/tools';
   export default{
-    // props: {
-    //   stageList: {
-    //     type: Array,
-    //     default: function(){
-    //       return []
-    //     }
-    //   }
-    // },
+  
     data(){
       return {
        
@@ -90,7 +83,6 @@
       initStageHandle(info){ 
       
         this.$store.dispatch('init_stage');
-        console.log( 'from methods initStage >>> ', this.stage)
         var _stageCount = this.$store.state.addStage.stageCount;
         if(_stageCount > 1){
           EventBus.$emit('add_toStage');
@@ -100,14 +92,16 @@
   
        
       },
-      showStage(info){
+      echoCurrentStage(info){
         
         EventBus.$emit('echoStage', info);
        
       },
       onEnd(Evt){
 
-      }
+      },
+      beforeDestroy(){
+         }
     
     },
     computed: {

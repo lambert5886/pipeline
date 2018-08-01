@@ -63,6 +63,7 @@
       }
     },
     beforeDestroy(){
+      console.log('  fortify  destroy  >>>>  ')
       EventBus.$off('add_fortify');
     }
   }
