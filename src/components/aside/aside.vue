@@ -1,7 +1,7 @@
 <template>
-	<Sider collapsible :collapsed-width="78" :style="{minHeight: '100vh'}" class="aside-bar" v-model="isCollapsed">
-		<aside-bar class="sider-item" :class="menuitemClasses"></aside-bar>
-	</Sider>
+  <Sider collapsible :collapsed-width="78" class="aside-bar" v-model="isCollapsed">
+    <aside-bar class="sider-item" :class="menuitemClasses"></aside-bar>
+  </Sider>
 </template>
 <script>
 	import AsideBar from '@/components/aside/asidebar'
@@ -25,11 +25,16 @@
 	}
 </script>
 <style scoped>
-.aside-bar{
-	background-color: #21488a;
-}
-.sider-item{
-	color: #fff;
-	background-color: #21488a;
-}
+  .aside-bar{
+    position: fixed;
+    left: 0;
+    top: 70px;
+    overflow-y: auto;
+    height: calc(100% - 108px);
+    background-color: #21488a;
+  }
+  .sider-item{
+    color: #fff;
+    background-color: transparent;
+  }
 </style>

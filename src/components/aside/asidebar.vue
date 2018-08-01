@@ -30,7 +30,7 @@
 			},
 		},
 		created() {
-		
+
 			this.curRouterName = this.$router.history.current.name;
 			this.curRouterPath = this.$router.history.current.path;
 			this.setAsideList();
@@ -55,23 +55,24 @@
 	}
 </script>
 <style scoped>
-.aside-option{
-	color: #fff;
-	border-bottom: 1px dashed #637ead;
-}
-.aside-option:hover{
-	background-color: #637ead;
-	border-bottom: 1px dashed #ff9900;
-	color: #ff9900;
-}
-.ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu){
-	color: #ff9900;
-	background-color: #637ead;
-	border-bottom: 1px dashed #ff9900;
-}
-.router-span{
-	display: block;
-	width: 100%;
-	height: 100%;
-}
+  .aside-option{
+    color: #ccc;
+  }
+  .aside-option:hover{
+    background-color: #637ead;
+    color: #fff;
+  }
+  .ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu){
+    color: #fff;
+    background-color: #637ead;
+  }
+  .ivu-menu-vertical .ivu-menu-item, .ivu-menu-vertical .ivu-menu-submenu-title{
+    padding: 0;
+    width: 100%;
+    height: 45px;
+    line-height: 45px;
+  }
+  .ivu-menu-light.ivu-menu-vertical .ivu-menu-item{
+    border-right: none;
+  }
 </style>

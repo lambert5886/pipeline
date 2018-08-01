@@ -1,12 +1,17 @@
 <template>
-	<Layout class="content">
-		<Breadcrumb :style="{margin: '24px 0'}">
-			<BreadcrumbItem v-text="curRouterTitle" :to="curRouterPath"></BreadcrumbItem>
-		</Breadcrumb>
-		<Content class="container">
-			<main-content></main-content>
-		</Content>
-	</Layout>
+  <Layout class="content">
+    <div class="content-top">
+      <Icon type="navicon-round"></Icon>
+      选择项目
+      <Select placeholder="选择用户模块" style="width:150px">
+        <Option value="1">用户模块</Option>
+        <Option value="2">其他模块</Option>
+      </Select>
+    </div>
+    <Content class="container">
+      <main-content></main-content>
+    </Content>
+  </Layout>
 </template>
 <script>
 	import {asideRouter} from '@/router/routerconfig'
@@ -38,7 +43,7 @@
 			setBread () {
 				var self = this;
 				this.routerobj = asideRouter;
-			
+
 				let obj = this.routerobj.find(item => {
 					return this.curRouterName.includes(item.name) === true;
 				})
@@ -56,12 +61,24 @@
 	}
 </script>
 <style scoped>
-.content{
-	margin: 0 20px;
-	text-align: left;
-}
-.container{
-	padding: 15px;	
-	background-color: #fff;
-}
+  .content{
+    width: calc(100% - 240px);
+    text-align: left;
+    margin-left: 220px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  .content-top{
+    margin: 10px 0;
+    padding: 0 15px;
+  }
+  .container{
+    background-color: #fff;
+    padding: 15px;
+  }
+  .ivu-layout-sider-collapsed+.content{
+    margin-left: 98px;
+    width: calc(100% - 118px);
+    transition: all .5s;
+  }
 </style>
