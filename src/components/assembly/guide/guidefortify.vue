@@ -51,8 +51,7 @@
     methods: {
       submitData(){
         let _fortifyData = Object.assign({}, {stepId: 'fortify'}, this.fortify);
-        // this.$store.dispatch('add_fortifyData', this.fortify);
-      
+       
         this.$store.dispatch('add_to_stepLists', _fortifyData);
       },
       echoData(item){

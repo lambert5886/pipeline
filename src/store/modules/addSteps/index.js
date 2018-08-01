@@ -42,11 +42,10 @@ const guideItems = {
     }
   },
   actions: {
-    add_to_stepLists({commit}, item) {
-     
+    add_to_stepLists({commit, rootState}, item) {
       commit('ADD_TO_STEP', item);
     },
-    changeStepIndex({commit}, info){
+    changeStepIndex({commit, rootState}, info){
        commit('CHANGE_STEP_INDEX', info);
     },
     deleteStep({commit}, info){

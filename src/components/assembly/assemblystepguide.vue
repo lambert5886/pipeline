@@ -3,11 +3,7 @@
     <div class="guite-process">
       <Row class="code-row-bg" type="flex">
         <div id="step-wrapper">
-            <assemblyStepItem
-            v-for="(item, index) in stageLists"
-            :key="index"
-            :stageItem="item"
-            ></assemblyStepItem>
+            <assemblyStageItem></assemblyStageItem>
         </div>
       </Row>
    
@@ -37,52 +33,40 @@
             </div>
           </Row>
       <guide-content ></guide-content>
-      <router-link to="/assembly/preview" tag="Button">下一步</router-link>
-      <router-link to="/assembly/create" tag="Button">上一步</router-link>
+      <router-link to="/assembly/preview" tag="Button">确定</router-link>
+      <router-link to="/assembly/create" tag="Button">预览</router-link>
     </div>
   </div>
 </template>
 <script>
 
   import Sortable from 'sortablejs';
-  import assemblyStepItem from './guide/assemblystep-item';
+  import assemblyStageItem from './guide/assemblystage-item';
   import GuideContent from './guide/guidecontent';
   import { EventBus } from '@/tools';
   export default {
     data() {
       return {
-        active: 1,
+        active: 0,
         transferPersonShow: true,
         stage: {
        
-        }
-
+        },
+       
         
       }
     },
     created(){
-    
-      let currentStage = this.$store.state.addStage;
-      this.active = currentStage.stageCount;
-     
-      Object.assign(this.stage, currentStage.stageList[currentStage.stageCount]);
-      
-    },
+     },
 
     mounted() { 
-     
-       document.body.ondrop = function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-      };
-      this.bindMove('step-wrapper');
-
+ 
       EventBus.$on('on-blur', this.showName);
+      EventBus.$on('echoStage', this.echoStage);
+      EventBus.$on('add_toStage', this.addStepToStage);
     },
     computed: {
-      stageLists(){
-        return this.$store.getters.stageList;
-      },
+     
       contentShow(){
         return this.$store.getters.showStage;
        
@@ -92,9 +76,9 @@
   
     methods: {
       showName(){
-        console.log('from methods showName >>>', this.stage.stageName, this.active);
-
-        this.$store.dispatch('show_stageName', this.stage.stageName);
+        // console.log('from methods showName >>>', this.stage, this.active);
+        // console.log(this.$store.state.addStage.stageCount, this.$store.state.addStage.stageList)
+        this.$store.dispatch('show_stageName', this.stage);
         
 
       },
@@ -105,34 +89,24 @@
           this.transferPersonShow = true;
         }
       },
-      setepChange(info){
-       
+      echoStage(info){
+       console.log(' from ehcoStage >>>  ', info)
+
+       Object.assign(this.stage, info);
+       console.log(' from echostage 222 >>>', this.stage)
       },
-
-      bindMove(stepId){
-        let vm = this;
-        let todoList = document.getElementById(stepId);
-
-        Sortable.create(todoList, {
-          group: {
-            name: 'list',
-            pull: true
-          },
-          animation: 120,
-          ghostClass: 'placeholder-style',
-          fallbackClass: 'iview-admin-cloned-item',
-          onMove: function(evt, originalEvent){
-
-          },
-          onEnd: function(evt){
-            EventBus.$emit('stepChange', {evt,item: vm.stepItem});
-          }
-        });
+      addStepToStage(){
+        let steps = this.$store.getters.getSteps;
+        let stages = this.$store.state.addStage;
+        let stageIndex = stages.stageCount - 2;
+        
+       Object.assign( stages.stageList[stageIndex], this.stage);
       }
+
     },
 
     components: {
-      assemblyStepItem,
+      assemblyStageItem,
       GuideContent
     }
   }
@@ -160,7 +134,7 @@
    width: 100%;
  }
   .guite-process {
-    height: 80px;
+    min-height: 80px;
    
   }
 </style>

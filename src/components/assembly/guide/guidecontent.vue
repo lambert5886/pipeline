@@ -77,7 +77,7 @@
       }
     },
     mounted() {
-    
+      EventBus.$on('initComponent', this.initComponent);
       if(this.typeId == 0){
         this.currentComponent = 'none';
       }
@@ -88,7 +88,6 @@
           return this.$store.getters.getSteps;
         },
         set(value){
-          console.log(' from step set >>>  ', value)
           this.$store.dispatch('changeStepIndex', value);
         }
       }
@@ -97,17 +96,19 @@
     methods: {
       // 点击“+”号，保存右边输入的内容
       submitGuide() {
-       console.log('触发 事件  >>>  ', this.typeId )
         EventBus.$emit('add_' + this.typeId);
       
         this.curGuideStepItems = this.$store.getters.getSteps;
         
       },
+      initComponent(){
+        this.currentComponent = 'none';
+        this.typeId = 0;
+      },
       onEnd(evt){
-        console.log( 'from event >>> ', evt)
+       
     },
       choseAsideItem(item){
-        console.log(' from step item >>>  ', item);
         this.currentComponent = item.stepId;
         EventBus.$emit('echo_' + item.stepId, item);
       },
@@ -115,7 +116,6 @@
         // this.$store.dispatch('changeStepIndex', info);
       },
       deleteStep(item){
-        console.log(' from delete item  >>> ', item);
         this.$store.dispatch('deleteStep', item);
       },
   
@@ -133,7 +133,6 @@
          }
        };
        
-       console.log(this.currentComponent)
       }
     },
     components: {
