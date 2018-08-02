@@ -14,6 +14,7 @@ export const ADD_GUIDE_ITEM = 'ADD_GUIDE_ITEM';
 export const ADD_TO_STEP = 'ADD_TO_STEP';
 export const CHANGE_STEP_INDEX = 'CHANGE_STEP_INDEX';
 export const DELETE_STEP = 'DELETE_STEP';
+export const ECHO_STEP = 'ECHO_STEP';
 
 // Fortify 扫描
 export const FORTIFY_DATA = 'FORTIFY_DATA';

@@ -9,13 +9,13 @@
             v-for="(stageItem, index) in stageList"
             :key="index">
           <span class="handle">
-            <img v-if="stageItem.active" src="@/assets/stepHandle.png" alt="">
+            <!-- <img v-if="stageItem.active" src="@/assets/stepHandle.png" alt=""> -->
           </span>
           <span class="addOrOk">
     
               <Icon  v-if="stageItem.active" 
                      type="plus-circled"  
-                     @click="addStageHandle(stageItem.stageId)"
+                     @click="echoCurrentStage(stageItem)"
                      color="blue" size="28"></Icon>
               <Icon  v-if="!stageItem.active" 
                      color="blue" 
@@ -75,10 +75,7 @@
             }
       }
     },
-    mounted(){
-     
-      
-    },
+  
     methods: {
       initStageHandle(info){ 
       
@@ -87,7 +84,8 @@
         if(_stageCount > 1){
           EventBus.$emit('add_toStage');
           this.$store.dispatch('add_step_to_stage'); 
-         
+          EventBus.$emit('initStageBase');
+       
         }
   
        

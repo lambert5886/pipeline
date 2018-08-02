@@ -62,11 +62,12 @@
     mounted() { 
  
       EventBus.$on('on-blur', this.showName);
+      EventBus.$on('initStageBase', this.intiStageBaseHandle);
       EventBus.$on('echoStage', this.echoStage);
       EventBus.$on('add_toStage', this.addStepToStage);
     },
     beforeDestory(){
-      console.log('  stepguide destorey >>>  ');
+    
     },
     computed: {
      
@@ -78,12 +79,11 @@
     },
   
     methods: {
+      intiStageBaseHandle(){
+          this.stage = Object.assign({}, this.stage, {stageName: '', transferMode: '', transferPerson: ''})
+      },
       showName(){
-        // console.log('from methods showName >>>', this.stage, this.active);
-        // console.log(this.$store.state.addStage.stageCount, this.$store.state.addStage.stageList)
         this.$store.dispatch('show_stageName', this.stage);
-        
-
       },
       showOrHidden(){
         if(this.stage.transferMode == 'auto'){
@@ -93,11 +93,13 @@
         }
       },
       echoStage(info){
-       Object.assign(this.stage, info);
-       let steps = this.stage.stepList;
+      this.stage =  Object.assign({}, this.stage, info); 
+      this.showOrHidden();
+      let stage = this.stage;
+      this.$store.dispatch('echoStep', stage);
+      EventBus.$emit('echoComponent',stage.stepList);
+    
       
-      EventBus.$emit('echoStep', steps);
-      EventBus.$emit('initComponent',steps[0])
     
       },
       addStepToStage(){

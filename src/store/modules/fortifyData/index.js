@@ -2,11 +2,20 @@ import { FORTIFY_DATA } from '@/store/mutation_type.js';
 
 const fortifyData = {
   state: {
-    list: []
+    fortify: {}
   },
   actions: {
     add_fortifyData({commit}, info){
       commit('FORTIFY_DATA', info);
+    },
+    echo_fortify({commit, state}, info){
+     
+      state.fortify  =  Object.assign({}, state.fortify, info);
+   
+    },
+    init_fortify({commit, state}){
+      state.fortify = null;
+      state.fortify = {};
     }
   },
   mutations: {

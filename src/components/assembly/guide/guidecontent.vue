@@ -37,16 +37,13 @@
           <Row style="margin-bottom: 20px;">
             <span class="form-label">选择步骤：</span>
             <Select v-model="typeId" style="width: 150px">
-              <Option v-for="step in guideTypeItems" :value="step.typeId" :key="step.name" v-text="step.name">
+              <Option v-for="(step, index) in guideTypeItems" :value="step.typeId" :key="index">
+                {{step.name}}
               </Option>
             </Select>
           </Row>
-          <!--<keep-alive>-->
-            <!-- <router-view ref="verifyForm"></router-view> -->
-          <!--</keep-alive>-->
-          
+       
             <component v-bind:is="currentComponent"></component>
-          
          
         </div>
       </Content>
@@ -76,14 +73,14 @@
       
       }
     },
-    beforeCreated(){
+    beforeCreate(){
    },
     created(){
-      console.log('  created >>> ');
-   
+     
     },
     mounted() {
       EventBus.$on('initComponent', this.initComponent);
+      EventBus.$on('echoComponent', this.echoComponent);
       EventBus.$on('echoStep', this.echoStep);
       if(this.typeId == 0){
         this.currentComponent = 'none';
@@ -102,7 +99,7 @@
     beforeDestroy(){
       },
     methods: {
-      // 点击“+”号，保存右边输入的内容
+      
       submitGuide() {
         EventBus.$emit('add_' + this.typeId);
       
@@ -111,28 +108,34 @@
       },
       initComponent(info){
         this.currentComponent = 'none';
-        if(info){
-          this.typeId = info.stepId;
-          }else{
-          this.typeId = 0;
-        }
+        this.typeId = 0;
       },
+      echoComponent(info){
+        console.log('from echoComponent >>> ', info.length)
+        if(info.length > 0){
+            this.currentComponent = info[0].stepId;
+          this.typeId = info[0].stepId; 
+          this.$store.dispatch('echo_' + info[0].stepId, info[0]);
+
+        EventBus.$emit('echo_' + info[0].stepId, info[0]); 
+        }else{
+          this.currentComponent = 'none';
+          this.typeId = 0; 
+        }
+       
+      },
+
       onEnd(evt){},
       echoStep(info){
-        console.log(' from echoStep >>>  ', info)
         let steps =  this.$store.state.addStep.steps;
-        if(steps.length > 0){
           steps = [];
           steps.push(...info);
-        }else{
-          steps.push(...info);
-        }
        
        
       },
       choseAsideItem(item){
         this.currentComponent = item.stepId;
-        EventBus.$emit('echo_' + item.stepId, item);
+        EventBus.$emit('echo_step_' + item.stepId, item);
       },
       changeStepHandle(info){
         // this.$store.dispatch('changeStepIndex', info);

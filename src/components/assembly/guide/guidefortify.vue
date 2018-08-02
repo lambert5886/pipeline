@@ -42,11 +42,14 @@
        }
       }
     },
+   created(){
+     this.echoFortify();
+   },
     mounted(){
      
       EventBus.$on('add_fortify', this.submitData);
-      EventBus.$on('echo_fortify', this.echoData);
- 
+      EventBus.$on('echo_step_fortify', this.echoData);
+      EventBus.$on('echo_fortify', this.echoFortify)
     },
     methods: {
       submitData(){
@@ -57,14 +60,19 @@
       echoData(item){
         let _data = this.$store.getters.getSteps;
         let index = item.stepIndex;
-      
-       this.fortify = _data[index];
+         this.fortify = _data[index];
 
+      },
+      echoFortify(){
+        let _fortify = this.$store.state.fortifyData.fortify;
+     
+        this.fortify =  Object.assign({}, this.fortify, _fortify)
       }
     },
     beforeDestroy(){
-      console.log('  fortify  destroy  >>>>  ')
-      EventBus.$off('add_fortify');
+       EventBus.$off('add_fortify');
+      EventBus.$off('echo_fortify');
+     
     }
   }
 </script>

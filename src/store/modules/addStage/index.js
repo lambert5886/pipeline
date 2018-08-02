@@ -33,9 +33,7 @@ const addStage = {
      
       commit('CHANGE_STAGE_INDEX', info);
     },
-    changeStageActive({state, commit}, info){
-      
-    },
+  
     add_step_to_stage({state, commit, rootState}){
      
       commit('ADD_STEP_TO_STAGE', rootState)
@@ -46,7 +44,10 @@ const addStage = {
       state.stageModal.stepList = [];
       let _CurrentCount = parseFloat(state.stageCount);
       let currentStage = state.stageModal;
-     state.stageList.push(Object.assign({}, currentStage, {stageId: _CurrentCount}));
+      state.stageList.push(Object.assign({}, currentStage, {stageId: _CurrentCount, active: true}));
+      if(_CurrentCount > 0){
+        Object.assign( state.stageList[state.stageCount - 1], {active: false} )
+      }
       state.stageCount = parseFloat(state.stageCount) + 1;
     },
   
