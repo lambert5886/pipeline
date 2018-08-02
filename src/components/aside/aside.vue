@@ -28,7 +28,7 @@
   .aside-bar{
     position: fixed;
     left: 0;
-    top: 70px;
+    top: 69px;
     overflow-y: auto;
     height: calc(100% - 108px);
     background-color: #21488a;

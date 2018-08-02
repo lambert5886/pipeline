@@ -43,6 +43,7 @@ html, body {
 
 .my-content {
   padding-top: 90px;
+  height: calc(100% - 130px);
   width: 100%;
   background-color: #fff !important;
   overflow-y: auto;
@@ -54,7 +55,7 @@ html, body {
   left: 0;
   z-index: 999;
   width: 100%;
-  height: 70px;
+  height: 69px;
   overflow: hidden;
   background: #f9f9f9 !important;
 }

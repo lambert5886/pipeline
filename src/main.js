@@ -13,7 +13,7 @@ import '@/style/reset.css'
 
 
 Vue.use(iView);
-Vue.use(VueAxios, axios);
+Vue.prototype.$axios = axios;
 
 Vue.config.productionTip = false
 

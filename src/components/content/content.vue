@@ -1,13 +1,13 @@
 <template>
   <Layout class="content">
-    <div class="content-top">
-      <Icon type="navicon-round"></Icon>
-      选择项目
-      <Select placeholder="选择用户模块" style="width:150px">
-        <Option value="1">用户模块</Option>
-        <Option value="2">其他模块</Option>
-      </Select>
-    </div>
+    <!--<div class="content-top">-->
+      <!--<Icon type="navicon-round"></Icon>-->
+      <!--选择项目-->
+      <!--<Select placeholder="选择用户模块" style="width:150px">-->
+        <!--<Option value="1">用户模块</Option>-->
+        <!--<Option value="2">其他模块</Option>-->
+      <!--</Select>-->
+    <!--</div>-->
     <Content class="container">
       <main-content></main-content>
     </Content>
