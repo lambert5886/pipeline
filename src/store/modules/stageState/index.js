@@ -1,6 +1,8 @@
-import { INIT_STAGE, ADD_STAGE, SHOW_STAGENAME, CHANGE_STAGE_INDEX, ADD_STEP_TO_STAGE  } from '@/store/mutation_type.js';
+import { INIT_STAGE, ADD_STAGE, SHOW_STAGENAME, 
+         CHANGE_STAGE_INDEX, ADD_STEP_TO_STAGE,
+         DELETE_STAGE  } from '@/store/mutation_type.js';
 import { EventBus } from '@/tools';
-const addStage = {
+const stageState = {
   state: {
     stageCount: 0,
     stageModal: {
@@ -37,6 +39,21 @@ const addStage = {
     add_step_to_stage({state, commit, rootState}){
      
       commit('ADD_STEP_TO_STAGE', rootState)
+    },
+    delete_stage({state, commit},info){
+     
+      let stages = state.stageList;
+      let _currentStage = info;
+       let filteredStage = stages.filter(function(item, index){
+
+        if(_currentStage.stageId !== item.stageId){
+          return true;
+        }
+      });
+      commit('CHANGE_STAGE_INDEX', filteredStage);
+      
+      let _CurrentCount = state.stageCount - 1;
+      state.stageCount = _CurrentCount;
     }
   },
   mutations: {
@@ -68,6 +85,9 @@ const addStage = {
       rootState.addStep.stepIndex = 0;
       rootState.addStep.steps = [];
       EventBus.$emit('initComponent');
+    },
+    [DELETE_STAGE](state, {commit}, info){
+     
     }
   },
   getters: {
@@ -81,4 +101,4 @@ const addStage = {
   }
 };
 
-export default addStage;
+export default stageState;

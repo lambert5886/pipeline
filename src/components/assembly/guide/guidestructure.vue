@@ -1,19 +1,25 @@
 <template>
   <div class="structure-container">
     <div class="from">
-      <Form ref="formValidate" :model="formValidate" :label-width="150" :rules="ruleValidate">
+      <Form  :label-width="150" >
         <FormItem label="自定义名称" prop="name">
-          <Input placeholder="请输入自定义的名称" style="width: 200px" v-model="formValidate.name"></Input>
+          <Input placeholder="请输入自定义的名称" style="width: 200px" v-model="structure.name"></Input>
         </FormItem>
         <FormItem label="源代码地址">
-          <Select style="width: 200px">
+          <Select v-model="structure.SourceCode" 
+                 
+                  style="width: 200px">
             <Option value="clearcase">learcase</Option>
             <Option value="git">Git</Option>
           </Select>
-          <Row style="margin: 10px auto;">
-            <Row>
-              Repository url <Input placeholder="请输入地址" style="width: 150px"/>
-            </Row>
+       
+        </FormItem>
+        <FormItem label="Repositories">
+          <Row v-if="structure.SourceCode == 'git'" style="margin-left: 10px auto;">
+            <FormItem label="Repository url">
+              <Input placeholder="请输入地址" style="width: 150px"/>
+            </FormItem>
+          
             <Row>
               Credentials <Input placeholder="请输入人员名称 以/分割" style="width: 150px"/>
             </Row>
@@ -23,7 +29,7 @@
           </Row>
         </FormItem>
         <FormItem label="构建标识" prop="mark">
-          <Input placeholder="" style="width: 200px" v-model="formValidate.mark"></Input>
+          <Input placeholder="" style="width: 200px" v-model="structure.mark"></Input>
         </FormItem>
         <Row>
           <span class="form-label">高级配置</span>
@@ -66,10 +72,7 @@
             </FormItem>
           </Row>
         </Row>
-        <!--<FormItem>-->
-        <!--<Button type="primary">确定</Button>-->
-        <!--<Button type="ghost" style="margin-left: 8px">重置</Button>-->
-        <!--</FormItem>-->
+     
       </Form>
     </div>
   </div>
@@ -77,108 +80,28 @@
 <script>
   import {guide} from '@/base/commonparam'
   import {addGuideList} from '@/base/common'
-
+  import { EventBus } from '@/tools';
   export default {
     data() {
       return {
-        isSuccess: false,  // 表单验证是否成功
-        guideItem: this.$route.query.guideItem,
-        formValidate: {
-          name: '',
-          mark: '',
-        },
-        ruleValidate: {
-          name: [
-            {required: true, message: '请输入姓名', trigger: 'blur'}
-          ],
-          mark: [
-            {required: true, message: '请输入标识', trigger: 'blur'}
-          ],
+        SourceCode: '',
+        structure: {
+          
         }
       }
     },
-    watch: {
-      $route: {
-        handler(val) {
-          if (val.query["id"]) {
-            console.log(val.query.guideItem.form)
-            this.formValidate.name = val.query.guideItem.form.name;
-            this.formValidate.mark = val.query.guideItem.form.mark;
-          } else {
-            this.formValidate.name = '';
-            this.formValidate.mark = '';
-          }
-        },
-        deep: true
-      }
-    },
+   
     mounted() {
-      this.setInitData();
+      EventBus.$on('on-query-change', this.showCodeGit);
     },
+    beforeDestroy(){
+      console.log(this.structure)
+    },
+   
     methods: {
-      // 设置初始化数据
-      setInitData() {
-        if (typeof this.guideItem === 'undefined') {
-          this.formValidate.name = '';
-          this.formValidate.mark = '';
-        } else {
-          if (this.guideItem['form']) {
-            this.formValidate.name = this.guideItem.form.name;
-            this.formValidate.mark = this.guideItem.form.mark;
-          }
-        }
-      },
-
-      // 触发验证表单事件, 与父组件进行交互
-      verifyForm() {
-        this.handleSubmit();
-        return this.isSuccess;
-      },
-
-      // 触发表单验证事件
-      handleSubmit() {
-        this.$refs.formValidate.validate((valid) => {
-          if (valid) {
-            this.isSuccess = true;
-            this.saveFormData();
-          } else {
-            this.isSuccess = false;
-          }
-        })
-      },
-
-      //  将表单数据添加到数据中
-      saveFormData() {
-        //  更改数据分两种情况，一种是已有数据更新，一种是新建数据
-        if (!this.$route.query['id']) {
-          console.log('no id')
-          //  新建数据
-          let form = {
-            name: this.formValidate.name,
-            mark: this.formValidate.mark
-          }
-          // addGuideList(0, guide.steps[0].stepsList.length, '9', '构建', this.formValidate
-          // );
-          let obj = {};
-          obj.id = guide.steps[0].stepsList.length;
-          obj.stepId = 9;
-          obj.name = '构建';
-          obj.form = {
-            name: this.formValidate.name,
-            mark: this.formValidate.mark
-          }
-          guide.steps[0].stepsList.push(obj);
-          this.$Message.success('添加成功!');
-        } else {
-          //  已有数据更新
-          let id = this.$route.query['id'];
-          let curItem = guide.steps[0].stepsList.find(item => id === item.id);
-          curItem.form = {
-            name: this.formValidate.name,
-            mark: this.formValidate.mark
-          }
-          this.$Message.success('修改成功!');
-        }
+      showCodeGit(info){
+        console.log(info)
+        // this.showOrHidden = true;
       }
     }
   }

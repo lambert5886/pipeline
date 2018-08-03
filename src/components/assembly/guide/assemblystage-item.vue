@@ -27,6 +27,12 @@
            </font>
          
           </span>
+          <Icon class="close" 
+                type="close"
+                size="16"
+                color="red"
+                @click="deleteStage(stageItem)"
+                ></Icon>
           <span class="arrow">
               <Icon type="arrow-right-a" 
                     color="blue" 
@@ -45,11 +51,7 @@
                      type="plus-circled"  
                      @click="initStageHandle"
                      color="blue" size="28"></Icon>
-             
-           <font>
-             
-           </font>
-         
+        
           </span>
           <span class="arrow">
               <Icon type="arrow-right-a" 
@@ -77,30 +79,32 @@
     },
   
     methods: {
-      initStageHandle(info){ 
+      initStageHandle(info){ // 加号 新增 stage, 
       
         this.$store.dispatch('init_stage');
-        var _stageCount = this.$store.state.addStage.stageCount;
+        var _stageCount = this.$store.state.stageState.stageCount;
         if(_stageCount > 1){
-          EventBus.$emit('add_toStage');
-          this.$store.dispatch('add_step_to_stage'); 
+          EventBus.$emit('add_toStageState');
+          // 
           EventBus.$emit('initStageBase');
        
         }
   
        
       },
-      echoCurrentStage(info){
+      echoCurrentStage(info){ // 回显 stage, 并 保存之前修改的 stage
         
         EventBus.$emit('echoStage', info);
        
       },
-      onEnd(Evt){
-
+      
+      deleteStage(info){
+        EventBus.$emit('delete_stage', info);
+        //  
+       
       },
-      beforeDestroy(){
-         }
-    
+      onEnd(Evt){},
+
     },
     computed: {
       stageList: {
@@ -122,12 +126,22 @@
 <style scoped>
   .step-item-wrapper{
     width: 150px;
-  
+    position: relative;
     float: left;
 
   }
+
   .step-item-wrapper:hover{
     cursor: pointer;
+  }
+  .step-item-wrapper .close{
+    display: none;
+  }
+  .step-item-wrapper:hover .close{
+    display: inline-block;
+    position: absolute;
+    right: 45px;
+    top: 10px;
   }
   .handle{
     display: inline-block;

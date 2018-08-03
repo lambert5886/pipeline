@@ -31,6 +31,11 @@ export const guideTypeList = [{
   name: 'Docker镜像',
   path: '/src/components/assembly/guide/guidedocker'
 },
+{
+  typeId: 'structure',
+  name: '构建',
+  path: '/src/components/assembly/guide/guidestructure'
+},
 ]
 
 // 整个引导指引的 类目结构

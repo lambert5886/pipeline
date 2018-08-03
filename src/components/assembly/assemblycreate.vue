@@ -1,7 +1,8 @@
 <template>
   <div>
     <Breadcrumb class="bread" separator=">">
-      <BreadcrumbItem v-for="item in breadList"><span>{{item}}</span></BreadcrumbItem>
+      <BreadcrumbItem v-for="(item, index) in breadList"
+                      :key="index"><span>{{item}}</span></BreadcrumbItem>
       <BreadcrumbItem>新建了流水线</BreadcrumbItem>
     </Breadcrumb>
     <Form ref="formValidate" :label-width="120">

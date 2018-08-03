@@ -47,7 +47,7 @@
   export default {
     data() {
       return {
-        active: 0,
+        activeStage: 0,
         transferPersonShow: true,
         stage: {
        
@@ -62,9 +62,11 @@
     mounted() { 
  
       EventBus.$on('on-blur', this.showName);
-      EventBus.$on('initStageBase', this.intiStageBaseHandle);
-      EventBus.$on('echoStage', this.echoStage);
-      EventBus.$on('add_toStage', this.addStepToStage);
+      EventBus.$on('initStageBase', this.intiStageBaseHandle); // 
+      EventBus.$on('echoStage', this.echoStage); // 监听 stage-item 的 回显 事件;
+      EventBus.$on('saveStage', this.saveStage); // 保存 stage;
+      EventBus.$on('deleteStage', this.deleteStage); // 删除 stage;
+      EventBus.$on('add_toStageState', this.add_toStageStateHandle);
     },
     beforeDestory(){
     
@@ -94,20 +96,29 @@
       },
       echoStage(info){
       this.stage =  Object.assign({}, this.stage, info); 
+      this.activeStage = info.stageId;
       this.showOrHidden();
       let stage = this.stage;
-      this.$store.dispatch('echoStep', stage);
+      // 
+      EventBus.$emit('echoStep', { activeStage: info.stageId, stepList: stage.stepList});
       EventBus.$emit('echoComponent',stage.stepList);
     
       
     
       },
-      addStepToStage(){
+      saveStage(){
+
+      },
+      deleteStage(){
+        this.$store.dispatch('delete_stage', info);
+      },
+      add_toStageStateHandle(){
         let steps = this.$store.getters.getSteps;
-        let stages = this.$store.state.addStage;
+        let stages = this.$store.state.stageState;
         let stageIndex = stages.stageCount - 2;
-        
+      
        Object.assign( stages.stageList[stageIndex], this.stage);
+       this.$store.dispatch('add_step_to_stage');
       }
 
     },

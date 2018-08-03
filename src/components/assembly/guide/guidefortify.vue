@@ -48,6 +48,7 @@
     mounted(){
      
       EventBus.$on('add_fortify', this.submitData);
+      EventBus.$on('edit_fortify', this.editFortify);
       EventBus.$on('echo_step_fortify', this.echoData);
       EventBus.$on('echo_fortify', this.echoFortify)
     },
@@ -58,10 +59,15 @@
         this.$store.dispatch('add_to_stepLists', _fortifyData);
       },
       echoData(item){
+        this.fortify = {};
         let _data = this.$store.getters.getSteps;
         let index = item.stepIndex;
-         this.fortify = _data[index];
+        this.fortify =  Object.assign( {},  _data[index]) ;
 
+      },
+      editFortify(info){
+        console.log(' edit_fortify  >>> ', this.fortify)
+        this.$store.dispatch('editStep', {index: info,data: this.fortify });
       },
       echoFortify(){
         let _fortify = this.$store.state.fortifyData.fortify;

@@ -3,7 +3,7 @@
     <div class="from">
       <Form ref="formValidate" :label-width="150">
         <FormItem label="自定义名称">
-          <Input placeholder="请输入自定义的名称" v-model="bugsData.name" style="width: 200px"></Input>
+          <Input placeholder="请输入自定义的名称" v-model="bugsData.stepName" style="width: 200px"></Input>
         </FormItem>
         
           <FormItem label="jdk版本">
@@ -43,24 +43,32 @@
     data() {
       return {
         bugsData: {
-          name: '',
-          peizhi: '',
-          peizhi2: ''
-
+         
         }
       }
     },
     created(){
-      console.log(' findbugs  >>> created')
-    },
+       },
     mounted(){
-      console.log(' findbugs  >>> mounted')
-      EventBus.$on('add_findbugs', this.fetchdata);
+        EventBus.$on('add_findbugs', this.submitdata);
+        EventBus.$on('echo_step_findbugs', this.echostepfindbugs);
+        EventBus.$on('echo_findbugs', this.echofindBugs);
     },
     methods: {
-      fetchdata(){
-        console.log( 'bugsData   :::   ', this.bugsData);
-        this.$store.dispatch('add_bugsData', this.bugsData);
+      submitdata(){
+          let _findBugsData = Object.assign({}, {stepId: 'findbugs'}, this.bugsData);
+          this.$store.dispatch('add_to_stepLists', _findBugsData);
+      },
+      echostepfindbugs(item){ 
+          this.bugsData = {};
+          let _data = this.$store.getters.getSteps;
+          let index = item.stepIndex;
+         
+          this.bugsData =  Object.assign( {},  _data[index]) ;
+
+      },
+      echofindBugs(){
+
       }
     }
 

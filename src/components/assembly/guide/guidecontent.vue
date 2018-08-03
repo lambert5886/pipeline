@@ -42,9 +42,11 @@
               </Option>
             </Select>
           </Row>
-       
+            <keep-alive>
+
+           
             <component v-bind:is="currentComponent"></component>
-         
+          </keep-alive>
         </div>
       </Content>
     </layout>
@@ -62,14 +64,15 @@
   Vue.component('findbugs',() => import('./guidefindbugs'));
   Vue.component('findbugspublish', () => import('./guidefindbugspublish'));
   Vue.component('docker', () => import('./guidedocker'));
- 
+  Vue.component('structure', () => import('./guidestructure'));
 
   export default {
     data() {
       return {
         typeId: 0,
         guideTypeItems: guideTypeList,
-        currentComponent: 'none'                
+        currentComponent: 'none',
+        stepActive: 0,                
       
       }
     },
@@ -111,8 +114,7 @@
         this.typeId = 0;
       },
       echoComponent(info){
-        console.log('from echoComponent >>> ', info.length)
-        if(info.length > 0){
+       if(info.length > 0){
             this.currentComponent = info[0].stepId;
           this.typeId = info[0].stepId; 
           this.$store.dispatch('echo_' + info[0].stepId, info[0]);
@@ -125,17 +127,19 @@
        
       },
 
-      onEnd(evt){},
       echoStep(info){
-        let steps =  this.$store.state.addStep.steps;
-          steps = [];
-          steps.push(...info);
-       
+      
+        this.$store.dispatch('echoStep', info);
        
       },
       choseAsideItem(item){
+        console.log(' active stepId >>> ', this.typeId);
+        EventBus.$emit('edit_' + this.typeId, this.stepActive);
         this.currentComponent = item.stepId;
+        this.typeId = item.stepId;
+        console.log(' new stepId >>> ', this.typeId);
         EventBus.$emit('echo_step_' + item.stepId, item);
+        this.stepActive = item.stepIndex;
       },
       changeStepHandle(info){
         // this.$store.dispatch('changeStepIndex', info);
@@ -143,7 +147,7 @@
       deleteStep(item){
         this.$store.dispatch('deleteStep', item);
       },
-  
+      onEnd(evt){},
   
      },
      watch: {

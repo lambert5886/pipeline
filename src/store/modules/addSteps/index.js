@@ -5,7 +5,8 @@ import {
   ADD_TO_STEP,
   CHANGE_STEP_INDEX,
   DELETE_STEP,
-  ECHO_STEP
+  ECHO_STEP,
+  EDIT_STEP
 } from '@/store/mutation_type.js'
 
 //
@@ -17,7 +18,6 @@ const guideItems = {
   },
   actions: {
     add_to_stepLists({commit, rootState}, item) {
-      console.log( ' from steps  >>> ', item)
       commit('ADD_TO_STEP',{rootState, item});
     },
     changeStepIndex({commit, rootState}, info){
@@ -28,6 +28,9 @@ const guideItems = {
     },
     echoStep({state, commit}, info){
       commit('ECHO_STEP', info);
+    },
+    editStep({commit},info){
+      commit('EDIT_STEP', info);
     }
   
   },
@@ -35,10 +38,16 @@ const guideItems = {
     [ADD_TO_STEP](state, { rootState, item}){
       let Index = state.stepIndex;
       state.steps.push( Object.assign({}, {stepIndex: Index}, item) );
-      let rootCurrentStage = rootState.addStage.stageList[state.stageActiveId];
-      rootCurrentStage.stepList = [];
-      rootCurrentStage.stepList = state.steps;
+      // let rootCurrentStage = rootState.addStage.stageList[state.stageActiveId];
+      // rootCurrentStage.stepList = [];
+      // rootCurrentStage.stepList = state.steps;
+     
       state.stepIndex = parseFloat(state.stepIndex) + 1;
+    },
+    [EDIT_STEP](state, info){
+      let _currentStep = state.steps[info.index];
+      console.log(' editStep store >>>  ', _currentStep)
+         Object.assign(_currentStep, info.data);
     },
     [CHANGE_STEP_INDEX](state, info){
       state.steps = [];
@@ -49,7 +58,7 @@ const guideItems = {
 
     },
     [ECHO_STEP](state, info){
-      state.stageActiveId = info.stageId;
+      state.stageActiveId = info.activeStage;
       state.steps = [];
       state.steps.push(...info.stepList);
     },
