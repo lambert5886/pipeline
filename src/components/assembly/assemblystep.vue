@@ -5,7 +5,7 @@
         <span>构建内容：</span>
         <RadioGroup v-model="stepStyle">
           <Radio label="guide">由向导定义构建步骤</Radio>
-          <Radio label="user">自定义构建脚本</Radio>
+         
         </RadioGroup>
       </Col>
     </Row>

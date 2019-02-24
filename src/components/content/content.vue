@@ -56,7 +56,7 @@
   .content{
     width: calc(100% - 240px);
     text-align: left;
-    margin-left: 220px;
+    margin-left: 120px;
     border: 1px solid #ccc;
     border-radius: 5px;
   }

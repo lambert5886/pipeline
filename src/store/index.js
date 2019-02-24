@@ -8,7 +8,8 @@ const store = new Vuex.Store({
   modules: {
     stageState,
     addStep,
-  }
+  },
+  strict: process.env.NODE_ENV !== 'production'
 });
 
 export default store;

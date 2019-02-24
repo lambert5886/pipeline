@@ -1,7 +1,6 @@
-import {searchItem} from '@/base/common'
+
 import {
-  INIT_GUIDE_ITEMS,
-  ADD_GUIDE_ITEM,
+
   ADD_TO_STEP,
   CHANGE_STEP_INDEX,
   DELETE_STEP,
@@ -9,7 +8,6 @@ import {
   EDIT_STEP
 } from '@/store/mutation_type.js'
 
-//
 const guideItems = {
   state: {
     stageActiveId: 0,
@@ -17,8 +15,8 @@ const guideItems = {
     steps: []
   },
   actions: {
-    add_to_stepLists({commit, rootState}, item) {
-      commit('ADD_TO_STEP',{rootState, item});
+    add_to_stepLists({commit}, item) {
+      commit('ADD_TO_STEP', item);
     },
     changeStepIndex({commit, rootState}, info){
        commit('CHANGE_STEP_INDEX', info);
@@ -35,14 +33,12 @@ const guideItems = {
   
   },
   mutations: {
-    [ADD_TO_STEP](state, { rootState, item}){
-      let Index = state.stepIndex;
-      state.steps.push( Object.assign({}, {stepIndex: Index}, item) );
-      // let rootCurrentStage = rootState.addStage.stageList[state.stageActiveId];
-      // rootCurrentStage.stepList = [];
-      // rootCurrentStage.stepList = state.steps;
-     
-      state.stepIndex = parseFloat(state.stepIndex) + 1;
+    [ADD_TO_STEP](state, item){
+      let _item = null;
+      let _index = parseFloat(state.stepIndex) + 1;
+      _item = Object.assign({},{index: _index}, item );
+      state.steps.push(_item);
+      state.stepIndex = _index;
     },
     [EDIT_STEP](state, info){
       let _currentStep = state.steps[info.index];

@@ -17,19 +17,7 @@
                   <span slot="prepend">定义阶段名称</span>
                 </Input>
               </Col>
-              <Col span="8">
-                <Select v-model="stage.transferMode"  
-                        @on-query-change="showOrHidden"
-                        style="width:200px">
-                  <Option value="auto">自动流转</Option>
-                  <Option value="hand">手动流转</Option>
-                </Select>
-              </Col>
-              <Col v-if="transferPersonShow" span="8">
-                <Input v-model="stage.transferPerson">
-                  <span slot="prepend">流转人</span>
-                </Input>
-              </Col>
+              
             </div>
           </Row>
       <guide-content ></guide-content>
@@ -82,7 +70,10 @@
   
     methods: {
       intiStageBaseHandle(){
-          this.stage = Object.assign({}, this.stage, {stageName: '', transferMode: '', transferPerson: ''})
+          this.$store.dispatch("init_stage");
+          let _currentStage = this.$store.getters.currentStage;
+        
+          this.stage = Object.assign({}, this.stage, _currentStage)
       },
       showName(){
         this.$store.dispatch('show_stageName', this.stage);
@@ -113,12 +104,7 @@
         this.$store.dispatch('delete_stage', info);
       },
       add_toStageStateHandle(){
-        let steps = this.$store.getters.getSteps;
-        let stages = this.$store.state.stageState;
-        let stageIndex = stages.stageCount - 2;
-      
-       Object.assign( stages.stageList[stageIndex], this.stage);
-       this.$store.dispatch('add_step_to_stage');
+        
       }
 
     },
