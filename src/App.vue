@@ -1,20 +1,17 @@
 <template>
   <Layout id="app" class="layout">
-    <my-header></my-header>
+    <!-- <my-header></my-header> -->
     <Layout class="my-content">
       <Content class="app-content">
-        <my-aside></my-aside>
+        <!-- <my-aside></my-aside> -->
         <my-content></my-content>
       </Content>
     </Layout>
-    <div style="height: 40px;overflow: hidden">
-      <Footer >2011-2016 &copy; TalkingData</Footer>
-    </div>
+
   </Layout>
 </template>
 <script>
-  import MyHeader from '@/components/header/header'
-  import MyAside from '@/components/aside/aside'
+
   import MyContent from '@/components/content/content'
   export default {
     name: 'App',
@@ -24,8 +21,7 @@
     },
 
     components: {
-      MyHeader,
-      MyAside,
+   
       MyContent,
     }
   }
