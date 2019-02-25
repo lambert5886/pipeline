@@ -12,7 +12,7 @@
                      @end="onEnd">
             <div class="menu-item-wrapper"
                  v-for="(guideItem, index) in curGuideStepItems"
-                 :key="index">
+                 :key="guideItem.index">
               <MenuItem
                         :name="index"
                         :id="guideItem.stepId + guideItem.stepIndex"

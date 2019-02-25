@@ -94,6 +94,7 @@ export default {
         return this.$store.getters.stageList;
       },
       set(value) {
+        console.log('items >>>> ', value)
         this.$store.dispatch("changeStageIndex", value);
       }
     }

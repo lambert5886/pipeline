@@ -99,8 +99,11 @@ const stageState = {
           list = state.stageList;
         }
         list.forEach( (item, index) => {
+          console.log('stage >>>> ', item, index)
           item.stageId = index;
         });
+        state.stageList = [];
+        state.stageList = list;
       },
     [ADD_STEP_TO_STAGE](state, rootState, info){
       let stateCount = parseFloat(state.stageCount) - 2;
