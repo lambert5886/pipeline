@@ -50,10 +50,7 @@ export default {
       this.$store.dispatch("add_to_stepLists", _fortifyData);
     },
     echoData(item) {
-      this.fortify = {};
-      let _data = this.$store.getters.getSteps;
-      let index = item.stepIndex;
-      this.fortify = Object.assign({}, _data[index]);
+     this.fortify = Object.assign({}, item);
     },
     editFortify(info) {
       console.log(" edit_fortify  >>> ", this.fortify);

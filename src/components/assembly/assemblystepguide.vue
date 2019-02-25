@@ -52,7 +52,7 @@
       EventBus.$on('on-blur', this.showName);
       EventBus.$on('initStageBase', this.intiStageBaseHandle); // 
       EventBus.$on('echoStage', this.echoStage); // 监听 stage-item 的 回显 事件;
-      EventBus.$on('saveStage', this.saveStage); // 保存 stage;
+      EventBus.$on('saveStepListToStage', this.saveStepListToStageHandle); // 保存 stage;
       EventBus.$on('deleteStage', this.deleteStage); // 删除 stage;
       EventBus.$on('add_toStageState', this.add_toStageStateHandle);
     },
@@ -97,8 +97,8 @@
       
     
       },
-      saveStage(){
-
+      saveStepListToStageHandle(){
+        this.$store.dispatch('save_stepList_stage');
       },
       deleteStage(){
         this.$store.dispatch('delete_stage', info);

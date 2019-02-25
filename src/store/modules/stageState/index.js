@@ -4,7 +4,7 @@ import {INIT_STAGE,
         SHOW_STAGENAME,
         CHANGE_STAGE_ACTIVE,
         CHANGE_STAGE_INDEX,
-        ADD_STEP_TO_STAGE,
+        SAVE_STEP_TO_STAGE,
            } from '@/store/mutation_type.js';
 import { EventBus } from '@/tools';
 const stageState = {
@@ -46,9 +46,9 @@ const stageState = {
       commit('CHANGE_STAGE_ACTIVE', info)
     },
   
-    add_step_to_stage({state, commit, rootState}){
+    save_stepList_stage({state, commit, rootState}){
      
-      commit('ADD_STEP_TO_STAGE', rootState)
+      commit('SAVE_STEP_TO_STAGE', rootState)
     },
     delete_stage({state, commit},info){
      
@@ -105,11 +105,14 @@ const stageState = {
         state.stageList = [];
         state.stageList = list;
       },
-    [ADD_STEP_TO_STAGE](state, rootState, info){
-      let stateCount = parseFloat(state.stageCount) - 2;
-      state.stageList[stateCount].stepList.push(...rootState.addStep.steps);
+    [SAVE_STEP_TO_STAGE](state, rootState, info){
+      console.log('stage >>> ', state.activeId)
+      let toStageId = state.activeId;
+      let toStage = state.stageList[toStageId];
+      toStage.stepList = [];
+      toStage.stepList.push(...rootState.addStep.stepList);
       rootState.addStep.stepIndex = 0;
-      rootState.addStep.steps = [];
+      rootState.addStep.stepList = [];
       EventBus.$emit('initComponent');
     },
     [DELETE_STAGE](state, info){

@@ -77,7 +77,7 @@ export default {
     },
     echoCurrentStage(info) {
       // 回显 stage, 并 保存之前修改的 stage
-
+      EventBus.$emit('saveStepListToStage');
       EventBus.$emit("echoStage", info);
       this.$store.dispatch('changeStageActive', info);
     },

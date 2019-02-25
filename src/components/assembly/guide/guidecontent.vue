@@ -116,8 +116,7 @@ export default {
       if (info.length > 0) {
         this.currentComponent = info[0].stepId;
         this.typeId = info[0].stepId;
-        this.$store.dispatch("echo_" + info[0].stepId, info[0]);
-
+       
         EventBus.$emit("echo_" + info[0].stepId, info[0]);
       } else {
         this.currentComponent = "none";
@@ -129,8 +128,8 @@ export default {
       this.$store.dispatch("echoStep", info);
     },
     choseAsideItem(item) {
+      console.log('edit item >>>> ', item)
      
-      EventBus.$emit("edit_" + this.typeId, this.stepActive);
       this.currentComponent = item.stepId;
       this.typeId = item.stepId;
     
