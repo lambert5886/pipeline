@@ -40,6 +40,7 @@
       <Content class="guide-content-box">
 
         <div class="form">
+          <span>{{isEdit ? '编辑' : '新增'}}</span>
           <Row style="margin-bottom: 20px;">
             <span class="form-label">选择步骤：</span>
             <Select v-model="typeId"
@@ -69,13 +70,12 @@ import Vue from "vue";
 Vue.component("none", () => import("./guidenone"));
 Vue.component("fortify", () => import("./guidefortify"));
 Vue.component("findbugs", () => import("./guidefindbugs"));
-Vue.component("findbugspublish", () => import("./guidefindbugspublish"));
-Vue.component("docker", () => import("./guidedocker"));
 
 export default {
   data() {
     return {
       typeId: 0,
+      isEdit: false,
       guideTypeItems: guideTypeList,
       currentComponent: "none",
       stepActive: 0
@@ -104,9 +104,10 @@ export default {
   beforeDestroy() {},
   methods: {
     submitGuide() {
-      EventBus.$emit("add_" + this.typeId);
+     this.initComponent();
+     this.isEdit = this.$store.getters.stepActive != null;
+     this.$store.dispatch('reset_step_active');
 
-      this.curGuideStepItems = this.$store.getters.getSteps;
     },
     initComponent(info) {
       this.currentComponent = "none";
@@ -129,12 +130,13 @@ export default {
     },
     choseAsideItem(item) {
       console.log('edit item >>>> ', item)
-     
+      this.$store.dispatch('change_step_active', item);
       this.currentComponent = item.stepId;
       this.typeId = item.stepId;
     
       EventBus.$emit("echo_step_" + item.stepId, item);
-      this.stepActive = item.stepIndex;
+        this.isEdit =  this.$store.getters.stepActive != null;
+     
     },
     changeStepHandle(info) {
       // this.$store.dispatch('changeStepIndex', info);
