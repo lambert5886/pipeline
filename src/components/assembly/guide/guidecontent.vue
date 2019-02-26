@@ -129,7 +129,7 @@ export default {
     },
     choseAsideItem(item) {
       console.log('edit item >>>> ', item)
-     
+      this.dispatch('change_step_active', item);
       this.currentComponent = item.stepId;
       this.typeId = item.stepId;
     
