@@ -21,21 +21,7 @@ export const guideTypeList = [{
   name: 'FindBugs',
   path: '/src/components/assembly/guide/guidefindbugs'
 },
-{
-  typeId: 'findbugspublish',
-  name: 'FindBugs报告发布',
-  path: '/src/components/assembly/guide/guidefindbugspublish'
-},
-{
-  typeId: 'docker',
-  name: 'Docker镜像',
-  path: '/src/components/assembly/guide/guidedocker'
-},
-{
-  typeId: 'structure',
-  name: '构建',
-  path: '/src/components/assembly/guide/guidestructure'
-},
+
 ]
 
 // 整个引导指引的 类目结构

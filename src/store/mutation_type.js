@@ -16,6 +16,8 @@ export const ADD_GUIDE_ITEM = 'ADD_GUIDE_ITEM';
 
 export const ADD_TO_STEP = 'ADD_TO_STEP';
 export const CHANGE_STEP_INDEX = 'CHANGE_STEP_INDEX';
+export const CHANGE_STEP_ACTIVE = 'CHANGE_STEP_ACTIVE';
+export const RESET_STEP_ACTIVE = 'RESET_STEP_ACTIVE';
 export const DELETE_STEP = 'DELETE_STEP';
 export const ECHO_STEP = 'ECHO_STEP';
 export const EDIT_STEP = 'EDIT_STEP';

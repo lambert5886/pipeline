@@ -2,6 +2,8 @@ import {
 
   ADD_TO_STEP,
   CHANGE_STEP_INDEX,
+  CHANGE_STEP_ACTIVE,
+  RESET_STEP_ACTIVE,
   DELETE_STEP,
   ECHO_STEP,
   EDIT_STEP
@@ -10,7 +12,8 @@ import {
 const guideItems = {
   state: {
     stageActiveId: 0,
-    stepIndex: 0,
+    stepCont: 0,
+    stepActive: null,
     stepList: []
   },
   actions: {
@@ -18,6 +21,7 @@ const guideItems = {
       commit
     }, item) {
       commit('ADD_TO_STEP', item);
+      commit('CHANGE_STEP_INDEX');
     },
     editStep({
       commit
@@ -29,6 +33,17 @@ const guideItems = {
     }, info) {
       commit('DELETE_STEP', info);
       commit('CHANGE_STEP_INDEX');
+    },
+    change_step_active({
+      state,
+      commit
+    }, info) {
+      commit('CHANGE_STEP_ACTIVE', info)
+    },
+    reset_step_active({
+      commit
+    }, info) {
+      commit('RESET_STEP_ACTIVE');
     },
     changeStepIndex({
       commit,
@@ -47,18 +62,30 @@ const guideItems = {
 
   },
   mutations: {
-    [ADD_TO_STEP](state, item) {
+    [ADD_TO_STEP](state, info) {
       let _item = null;
-      let _index = parseFloat(state.stepIndex) + 1;
-      _item = Object.assign({}, {
-        index: _index
-      }, item);
-      state.stepList.push(_item);
-      state.stepIndex = _index;
+
+      if (state.stepActive != null) {
+
+        state.stepList.forEach((item) => {
+          if (item.index == state.stepActive) {
+            Object.assign(item, info);
+          }
+        });
+
+      } else {
+        let _index = parseFloat(state.stepCont) + 1;
+        _item = Object.assign({}, {
+          index: _index
+        }, info);
+        state.stepList.push(_item);
+        state.stepCont = _index;
+      }
+
     },
     [EDIT_STEP](state, info) {
       let _currentStep = state.stepList[info.index];
-      console.log(' editStep store >>>  ', _currentStep)
+
       Object.assign(_currentStep, info.data);
     },
     [CHANGE_STEP_INDEX](state, info) {
@@ -69,13 +96,19 @@ const guideItems = {
           info[i].index = i;
         }
         state.stepList = info;
-      }else{
-        state.stepList.forEach( (item, index) => {
+      } else {
+        state.stepList.forEach((item, index) => {
           item.index = index;
         });
       }
 
 
+    },
+    [CHANGE_STEP_ACTIVE](state, info) {
+      state.stepActive = info.index;
+    },
+    [RESET_STEP_ACTIVE](state, info) {
+      state.stepActive = null;
     },
     [ECHO_STEP](state, info) {
       state.stageActiveId = info.activeStage;
@@ -84,13 +117,11 @@ const guideItems = {
     },
     [DELETE_STEP](state, info) {
       let steps = state.stepList.filter(function (item, index) {
-        if (item.stepIndex !== info.stepIndex) {
+        if (item.index !== info.index) {
           return true;
         }
       });
-      // for (let i = 0; i < steps.length; i++) {
-      //   steps[i].stepIndex = i;
-      // }
+
       state.stepList = steps;
 
     }
@@ -99,6 +130,10 @@ const guideItems = {
   getters: {
     getSteps(state) {
       return state.stepList;
+    },
+    stepActive(state) {
+      console.log(' state active >>>> ', state.stepActive, !!state.stepActive)
+      return state.stepActive;
     }
   }
 };

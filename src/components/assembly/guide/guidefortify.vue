@@ -26,23 +26,25 @@ export default {
     };
   },
   created() {
-    this.echoFortify();
+    
   },
   mounted() {
-    EventBus.$on("add_fortify", this.submitData);
+  
     EventBus.$on("edit_fortify", this.editFortify);
     EventBus.$on("echo_step_fortify", this.echoData);
-    EventBus.$on("echo_fortify", this.echoFortify);
+    
   },
   methods: {
     addToStepHandle(){
-      let _fortify = {};
+      let _fortify = null;
+     
       if(this.fortify.stepName){
         _fortify = Object.assign({}, this.fortify, {stepId: 'fortify'});
       }else{
         _fortify = Object.assign({}, {stepId: 'fortify', stepName: 'Foritfy扫描执行'});
       }
       this.$store.dispatch('add_to_stepLists', _fortify);
+      this.resetHandle();
     },
     submitData() {
       let _fortifyData = Object.assign({}, { stepId: "fortify" }, this.fortify);
@@ -53,11 +55,15 @@ export default {
      this.fortify = Object.assign({}, item);
     },
     editFortify(info) {
-      console.log(" edit_fortify  >>> ", this.fortify);
+  
       this.$store.dispatch("editStep", { index: info, data: this.fortify });
     },
-    echoFortify() {}
+    
+     resetHandle(){
+      this.fortify = {};
+    },
   },
+
   beforeDestroy() {
     EventBus.$off("add_fortify");
     EventBus.$off("echo_fortify");
