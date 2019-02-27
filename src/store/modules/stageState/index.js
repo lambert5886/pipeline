@@ -109,6 +109,7 @@ const stageState = {
       console.log('stage >>> ', state.activeId)
       let toStageId = state.activeId;
       let toStage = state.stageList[toStageId];
+    
       toStage.stepList = [];
       toStage.stepList.push(...rootState.addStep.stepList);
       rootState.addStep.stepIndex = 0;
