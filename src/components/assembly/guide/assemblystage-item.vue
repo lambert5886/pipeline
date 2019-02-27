@@ -71,9 +71,10 @@ export default {
   methods: {
     initStageHandle() {
       // 加号 新增 stage,
-      EventBus.$emit('initStageBase');
-    
+       EventBus.$emit('saveStepListToStage');
      
+      EventBus.$emit('initStageBase');
+      
     },
     echoCurrentStage(info) {
       // 回显 stage, 并 保存之前修改的 stage
